@@ -13,6 +13,7 @@ import android.app.DownloadManager.Request;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 
 public class DownloadsUtil {
 	public static final String MIME_TYPE_APK = "application/vnd.android.package-archive";
@@ -29,7 +30,12 @@ public class DownloadsUtil {
 		Request request = new Request(Uri.parse(url));
 		request.setTitle(title);
 		request.setMimeType(MIME_TYPE_APK);
-		request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
+		} else {
+			// on android-2.3, default writes to /cache, which cannot be read
+			request.setDestinationInExternalFilesDir(context, null, Uri.parse(url).getLastPathSegment());
+		}
 		long id = dm.enqueue(request);
 
 		return getById(context, id);
@@ -45,13 +51,18 @@ public class DownloadsUtil {
 		int columnUri = c.getColumnIndexOrThrow(DownloadManager.COLUMN_URI);
 		int columnTitle = c.getColumnIndexOrThrow(DownloadManager.COLUMN_TITLE);
 		int columnLastMod = c.getColumnIndexOrThrow(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP);
-		int columnFilename = c.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_FILENAME);
+		int columnFilename = c.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
 		int columnStatus = c.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS);
 		int columnTotalSize = c.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
 		int columnBytesDownloaded = c.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
 		int columnReason = c.getColumnIndexOrThrow(DownloadManager.COLUMN_REASON);
 
-		String localFilename = c.getString(columnFilename);
+		String localFilename;
+		if (columnFilename != -1) {
+			localFilename = c.getString(columnFilename);
+		} else {
+			localFilename = getLocalFilename(context, c);
+		}
 		if (localFilename != null && !localFilename.isEmpty() && !new File(localFilename).isFile()) {
 			dm.remove(c.getLong(columnId));
 			return null;
@@ -82,7 +93,7 @@ public class DownloadsUtil {
 		int columnUri = c.getColumnIndexOrThrow(DownloadManager.COLUMN_URI);
 		int columnTitle = c.getColumnIndexOrThrow(DownloadManager.COLUMN_TITLE);
 		int columnLastMod = c.getColumnIndexOrThrow(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP);
-		int columnFilename = c.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_FILENAME);
+		int columnFilename = c.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME);
 		int columnStatus = c.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS);
 		int columnTotalSize = c.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
 		int columnBytesDownloaded = c.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
@@ -93,7 +104,12 @@ public class DownloadsUtil {
 			if (!url.equals(c.getString(columnUri)))
 				continue;
 
-			String localFilename = c.getString(columnFilename);
+			String localFilename;
+			if (columnFilename != -1) {
+				localFilename = c.getString(columnFilename);
+			} else {
+				localFilename = getLocalFilename(context, c);
+			}
 			if (localFilename != null && !localFilename.isEmpty() && !new File(localFilename).isFile()) {
 				dm.remove(c.getLong(columnId));
 				continue;
@@ -218,6 +234,25 @@ public class DownloadsUtil {
 
 	public static interface DownloadFinishedCallback {
 		public void onDownloadFinished(Context context, DownloadInfo info);
+	}
+
+	/**
+	 * get local filename from <code>{@link android.provider.Downloads.Impl#_DATA}</code>.
+	 * @param context
+	 * @param c cursor for downloads, which should contain <code>{@link android.app.DownloadManager#COLUMN_LOCAL_URI}</code>
+	 * @return
+	 */
+	private static String getLocalFilename(Context context, Cursor c) {
+		int columnLocalUri = c.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_URI);
+		Uri localUri = Uri.parse(c.getString(columnLocalUri));
+		if (localUri.getScheme().equalsIgnoreCase("file")) {
+			return localUri.getPath();
+		}
+		Cursor d = context.getContentResolver().query(localUri, new String[] { "_data" }, null, null, null);
+		if (d != null && d.moveToFirst()) {
+			return d.getString(d.getColumnIndex("_data"));
+		}
+		return null;
 	}
 }
 

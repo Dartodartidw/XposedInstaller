@@ -9,8 +9,8 @@ import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -30,7 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
@@ -95,7 +95,7 @@ public class DownloadFragment extends Fragment implements RepoListener {
 				// requires onCreateAnimator() to be overridden!
 				tx.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
 						R.anim.slide_in_left, R.anim.slide_out_right);
-				tx.replace(android.R.id.content, fragment);
+				tx.replace(R.id.action_bar_activity_content, fragment);
 				tx.addToBackStack("downloads_overview");
 				tx.commit();
 			}
@@ -128,7 +128,7 @@ public class DownloadFragment extends Fragment implements RepoListener {
 
 		// Setup search button
 		final MenuItem searchItem = menu.findItem(R.id.menu_search);
-		mSearchView = (SearchView) searchItem.getActionView();
+		mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 		mSearchView.setIconifiedByDefault(true);
 		mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
@@ -144,7 +144,7 @@ public class DownloadFragment extends Fragment implements RepoListener {
 				return true;
 			}
 		});
-		searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+		MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
 			@Override
 			public boolean onMenuItemActionExpand(MenuItem item) {
 				return true;
@@ -371,7 +371,9 @@ public class DownloadFragment extends Fragment implements RepoListener {
 			@Override
 			protected void publishResults(CharSequence constraint, FilterResults results) {
 				clear();
-				addAll((List<DownloadItem>) results.values);
+				for (DownloadItem item : (List<DownloadItem>) results.values) {
+					add(item);
+				}
 				if (results.count > 0) {
 					notifyDataSetChanged();
 				} else {

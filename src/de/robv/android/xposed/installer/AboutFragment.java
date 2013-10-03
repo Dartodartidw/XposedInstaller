@@ -2,7 +2,6 @@ package de.robv.android.xposed.installer;
 
 import android.animation.Animator;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;

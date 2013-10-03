@@ -4,12 +4,12 @@ import java.io.File;
 
 import android.animation.Animator;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -97,7 +97,7 @@ public class DownloadDetailsFragment extends Fragment {
 	}
 
 	private Spanned parseSimpleHtml(String source) {
-		source = source.replaceAll("<li>", "\t• ");
+		source = source.replaceAll("<li>", "\t ");
 		source = source.replaceAll("</li>", "<br>");
 		Spanned html = Html.fromHtml(source);
 		
@@ -238,6 +238,10 @@ public class DownloadDetailsFragment extends Fragment {
 
 		@Override
 		public void onDownloadFinished(Context context, DownloadInfo info) {
+			if (info.localFilename == null) {
+				return;
+			}
+
 			File localFile = new File(info.localFilename);
 			if (!localFile.isFile())
 				return;
@@ -249,11 +253,13 @@ public class DownloadDetailsFragment extends Fragment {
 						Toast.makeText(context, context.getString(R.string.download_md5sum_incorrect,
 								actualMd5Sum, moduleVersion.md5sum), Toast.LENGTH_LONG).show();
 
+						localFile.delete();
 						return;
 					}
 				} catch (Exception e) {
 					Toast.makeText(context, context.getString(R.string.download_could_not_read_file,
 							e.getMessage()), Toast.LENGTH_LONG).show();
+					localFile.delete();
 					return;
 				}
 			}
@@ -263,6 +269,7 @@ public class DownloadDetailsFragment extends Fragment {
 
 			if (packageInfo == null) {
 				Toast.makeText(context, R.string.download_no_valid_apk, Toast.LENGTH_LONG).show();
+				localFile.delete();
 				return;
 			}
 
@@ -272,15 +279,23 @@ public class DownloadDetailsFragment extends Fragment {
 						packageInfo.packageName, moduleVersion.module.packageName),
 					Toast.LENGTH_LONG).show();
 
+				localFile.delete();
 				return;
 			}
 
-			Intent installIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+			Intent installIntent;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+				installIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+			} else {
+				installIntent = new Intent(Intent.ACTION_VIEW);
+			}
 			installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			installIntent.setDataAndType(Uri.fromFile(localFile), DownloadsUtil.MIME_TYPE_APK);
 			//installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
 			//installIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-			installIntent.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, context.getApplicationInfo().packageName);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+				installIntent.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, context.getApplicationInfo().packageName);
+			}
 			context.startActivity(installIntent);
 		}
 	}

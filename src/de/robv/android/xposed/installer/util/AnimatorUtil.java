@@ -2,7 +2,8 @@ package de.robv.android.xposed.installer.util;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.Fragment;
+import android.os.Build;
+import android.support.v4.app.Fragment;
 import de.robv.android.xposed.installer.R;
 
 public final class AnimatorUtil {
@@ -36,6 +37,9 @@ public final class AnimatorUtil {
 			to = parentWidth;
 		}
 		
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+			return null;
+		}
 		ObjectAnimator animator = ObjectAnimator.ofFloat(fragment, "x", from, to);
 		animator.setDuration(fragment.getResources().getInteger(android.R.integer.config_mediumAnimTime));
 		return animator;

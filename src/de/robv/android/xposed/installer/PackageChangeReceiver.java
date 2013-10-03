@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Notification;
+import android.support.v4.app.NotificationCompat;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -60,7 +61,7 @@ public class PackageChangeReceiver extends BroadcastReceiver {
 		startXposedInstaller.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		
 		Notification notification =
-			new Notification.Builder(context)
+			new NotificationCompat.Builder(context)
 			.setContentTitle(context.getString(R.string.module_is_not_activated_yet))
 			.setContentText(appName)
 			.setTicker(context.getString(R.string.module_is_not_activated_yet))

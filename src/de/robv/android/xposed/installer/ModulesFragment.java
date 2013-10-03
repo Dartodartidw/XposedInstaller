@@ -1,10 +1,11 @@
 package de.robv.android.xposed.installer;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ListFragment;
+import android.support.v4.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -95,6 +96,12 @@ public class ModulesFragment extends ListFragment {
 	private class ModuleAdapter extends ArrayAdapter<InstalledModule> {
 		public ModuleAdapter(Context context) {
 			super(context, R.layout.list_item_module, R.id.text);
+		}
+
+		public void addAll(Collection<? extends InstalledModule> modules) {
+			for (InstalledModule module : modules) {
+				add(module);
+			}
 		}
 
 		@Override
