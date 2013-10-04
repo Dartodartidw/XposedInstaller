@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-package android.preference;
+package de.robv.android.xposed.installer;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import de.robv.android.xposed.installer.R;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.Preference;
+import android.preference.PreferenceGroup;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,7 +103,7 @@ import android.widget.ListView;
  * @see Preference
  * @see PreferenceScreen
  */
-public abstract class PreferenceFragmentCompat extends Fragment {
+public abstract class PreferenceFragment extends Fragment {
 
     private static final String PREFERENCES_TAG = "android:preferences";
 
@@ -145,7 +154,10 @@ public abstract class PreferenceFragmentCompat extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPreferenceManager = new PreferenceManager(getActivity(), FIRST_REQUEST_CODE);
+        // FIXME: mPreferenceManager = new PreferenceManager(getActivity(), FIRST_REQUEST_CODE);
+        mPreferenceManager = callConstructor(PreferenceManager.class,
+            new Class[] { Activity.class, int.class },
+            new Object[] { getActivity(), FIRST_REQUEST_CODE });
     }
 
     @Override
@@ -184,7 +196,8 @@ public abstract class PreferenceFragmentCompat extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        mPreferenceManager.dispatchActivityStop();
+        // FIXME: mPreferenceManager.dispatchActivityStop();
+        callVoidMethod("dispatchActivityStop", null, null);
     }
 
     @Override
@@ -198,7 +211,8 @@ public abstract class PreferenceFragmentCompat extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPreferenceManager.dispatchActivityDestroy();
+        // FIXME: mPreferenceManager.dispatchActivityDestroy();
+        callVoidMethod("dispatchActivityDestroy", null, null);
     }
 
     @Override
@@ -217,7 +231,10 @@ public abstract class PreferenceFragmentCompat extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        mPreferenceManager.dispatchActivityResult(requestCode, resultCode, data);
+        // FIXME: mPreferenceManager.dispatchActivityResult(requestCode, resultCode, data);
+        callVoidMethod("dispatchActivityResult",
+            new Class[] { int.class, int.class, Intent.class },
+            new Object[] { requestCode, resultCode, data });
     }
 
     /**
@@ -234,7 +251,9 @@ public abstract class PreferenceFragmentCompat extends Fragment {
      * @param preferenceScreen The root {@link PreferenceScreen} of the preference hierarchy.
      */
     public void setPreferenceScreen(PreferenceScreen preferenceScreen) {
-        if (mPreferenceManager.setPreferences(preferenceScreen) && preferenceScreen != null) {
+        // FIXME: if (mPreferenceManager.setPreferences(preferenceScreen) && preferenceScreen != null) {
+        if (callReturnMethod("setPreferences", Boolean.class,
+            new Class[] { PreferenceScreen.class }, new Object[] { preferenceScreen }) && preferenceScreen != null) {
             mHavePrefs = true;
             if (mInitDone) {
                 postBindPreferences();
@@ -249,7 +268,8 @@ public abstract class PreferenceFragmentCompat extends Fragment {
      *         hierarchy.
      */
     public PreferenceScreen getPreferenceScreen() {
-        return mPreferenceManager.getPreferenceScreen();
+        // FIXME: return mPreferenceManager.getPreferenceScreen();
+        return callReturnMethod("getPreferenceScreen", PreferenceScreen.class, null, null);
     }
 
     /**
@@ -260,7 +280,10 @@ public abstract class PreferenceFragmentCompat extends Fragment {
     public void addPreferencesFromIntent(Intent intent) {
         requirePreferenceManager();
 
-        setPreferenceScreen(mPreferenceManager.inflateFromIntent(intent, getPreferenceScreen()));
+        // FIXME: setPreferenceScreen(mPreferenceManager.inflateFromIntent(intent, getPreferenceScreen()));
+        setPreferenceScreen(callReturnMethod("inflateFromIntent", PreferenceScreen.class,
+            new Class[] { Intent.class, PreferenceScreen.class },
+            new Object[] { intent, getPreferenceScreen() }));
     }
 
     /**
@@ -272,8 +295,11 @@ public abstract class PreferenceFragmentCompat extends Fragment {
     public void addPreferencesFromResource(int preferencesResId) {
         requirePreferenceManager();
 
-        setPreferenceScreen(mPreferenceManager.inflateFromResource(getActivity(),
-                preferencesResId, getPreferenceScreen()));
+        // FIXME: setPreferenceScreen(mPreferenceManager.inflateFromResource(getActivity(),
+        //         preferencesResId, getPreferenceScreen()));
+        setPreferenceScreen(callReturnMethod("inflateFromResource", PreferenceScreen.class,
+            new Class[] { Context.class, int.class, PreferenceScreen.class },
+            new Object[] { getActivity(), preferencesResId, getPreferenceScreen() }));
     }
 
     /**
@@ -346,4 +372,61 @@ public abstract class PreferenceFragmentCompat extends Fragment {
         }
 
     };
+
+    private void callVoidMethod(String methodName, Class<?>[] types, Object[] args) {
+        try {
+            Method method = PreferenceManager.class.getDeclaredMethod(methodName, types);
+            method.setAccessible(true);
+            method.invoke(mPreferenceManager, args);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T callReturnMethod(String methodName, Class<T> type, Class<?>[] types, Object[] args) {
+        try {
+            Method method = PreferenceManager.class.getDeclaredMethod(methodName, types);
+            method.setAccessible(true);
+            return (T) method.invoke(mPreferenceManager, args);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        if (Boolean.class.equals(type)) {
+            return (T) Boolean.FALSE;
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T callConstructor(Class<T> type, Class<?>[] types, Object[] args) {
+        try {
+            Constructor<?> constructor = PreferenceManager.class.getConstructor(types);
+            constructor.setAccessible(true);
+            return (T) constructor.newInstance(args);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
