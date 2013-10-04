@@ -4,10 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceFragmentCompat;
 import de.robv.android.xposed.installer.util.RepoLoader;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragment {
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
