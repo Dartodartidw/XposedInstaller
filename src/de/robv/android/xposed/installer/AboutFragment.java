@@ -1,7 +1,8 @@
 package de.robv.android.xposed.installer;
 
-import android.animation.Animator;
+import android.view.animation.Animation;
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -52,7 +53,7 @@ public class AboutFragment extends Fragment {
 	}
 
 	@Override
-	public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
 		return AnimatorUtil.createSlideAnimation(this, nextAnim);
 	}
 }

@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.animation.Animator;
+import android.view.animation.Animation;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -93,6 +94,7 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				DownloadItem item = mAdapter.getItem(position);
+
 				Intent detailsIntent = new Intent(getActivity(), DownloadDetailsActivity.class);
 				detailsIntent.setData(Uri.fromParts("package", item.packageName, null));
 				detailsIntent.putExtra(NavUtil.FINISH_ON_UP_NAVIGATION, true);
@@ -190,7 +192,7 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 	}
 
 	@Override
-	public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
 		return AnimatorUtil.createSlideAnimation(this, nextAnim);
 	}
 	
