@@ -1,0 +1,31 @@
+package de.robv.android.xposed.installer;
+
+import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
+import android.os.Bundle;
+
+public class DownloadDetailsActivity extends XposedDropdownNavActivity {
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		String packageName = getIntent().getData().getSchemeSpecificPart();
+		DownloadDetailsFragment detailsFragment = DownloadDetailsFragment.newInstance(packageName);
+
+		FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+		tx.replace(R.id.action_bar_activity_content, detailsFragment);
+		tx.commit();
+	}
+
+	@Override
+	protected boolean navigateViaIntent() {
+		return true;
+	}
+
+	@Override
+	protected Intent getParentIntent() {
+		Intent intent = new Intent(this, XposedInstallerActivity.class);
+		intent.putExtra(XposedInstallerActivity.EXTRA_OPEN_TAB, TAB_DOWNLOAD);
+		return intent;
+	}
+}

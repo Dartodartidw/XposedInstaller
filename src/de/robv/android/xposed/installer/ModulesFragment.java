@@ -10,9 +10,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -21,18 +26,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.robv.android.xposed.installer.repo.Module;
 import de.robv.android.xposed.installer.util.ModuleUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil.InstalledModule;
+import de.robv.android.xposed.installer.util.ModuleUtil.ModuleListener;
+import de.robv.android.xposed.installer.util.NavUtil;
+import de.robv.android.xposed.installer.util.RepoLoader;
 
-public class ModulesFragment extends ListFragment {
+public class ModulesFragment extends ListFragment implements ModuleListener {
 	public static final String SETTINGS_CATEGORY = "de.robv.android.xposed.category.MODULE_SETTINGS";
-	private String installedXposedVersion;
+	private int installedXposedVersion;
 	private ModuleUtil mModuleUtil;
+	private RepoLoader mRepoLoader;
+	private ModuleAdapter mAdapter = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    mModuleUtil = ModuleUtil.getInstance();
+	    mRepoLoader = RepoLoader.getInstance();
 	}
 
 	@Override
@@ -40,27 +52,51 @@ public class ModulesFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 
 		Activity activity = getActivity();
-		if (activity instanceof XposedInstallerActivity)
-			((XposedInstallerActivity) activity).setNavItem(XposedInstallerActivity.TAB_MODULES, null);
+		if (activity instanceof XposedDropdownNavActivity)
+			((XposedDropdownNavActivity) activity).setNavItem(XposedDropdownNavActivity.TAB_MODULES);
 
-		installedXposedVersion = InstallerFragment.getJarInstalledVersion(null);
+		installedXposedVersion = InstallerFragment.getJarInstalledVersion();
 
-		ModuleAdapter modules = new ModuleAdapter(getActivity());
-		modules.addAll(mModuleUtil.getModules().values());
-		modules.sort(new Comparator<InstalledModule>() {
-			@Override
-			public int compare(InstalledModule lhs, InstalledModule rhs) {
-				return lhs.getAppName().compareTo(rhs.getAppName());
-			}
-		});
-
-		setListAdapter(modules);
+		mAdapter = new ModuleAdapter(getActivity());
+		reloadModules.run();
+		setListAdapter(mAdapter);
 		setEmptyText(getActivity().getString(R.string.no_xposed_modules_found));
-
 		getListView().setFastScrollEnabled(true);
-
 		getListView().setDivider(getResources().getDrawable(R.color.list_divider));
 		getListView().setDividerHeight(1);
+		registerForContextMenu(getListView());
+		mModuleUtil.addListener(this);
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		mModuleUtil.removeListener(this);
+	}
+
+	private Runnable reloadModules = new Runnable() {
+		public void run() {
+			mAdapter.setNotifyOnChange(false);
+			mAdapter.clear();
+			mAdapter.addAll(mModuleUtil.getModules().values());
+			mAdapter.sort(new Comparator<InstalledModule>() {
+				@Override
+				public int compare(InstalledModule lhs, InstalledModule rhs) {
+					return lhs.getAppName().compareTo(rhs.getAppName());
+				}
+			});
+			mAdapter.notifyDataSetChanged();
+		}
+	};
+
+	@Override
+	public void onSingleInstalledModuleReloaded(ModuleUtil moduleUtil, String packageName, InstalledModule module) {
+		getActivity().runOnUiThread(reloadModules);
+	}
+
+	@Override
+	public void onInstalledModulesReloaded(ModuleUtil moduleUtil) {
+		getActivity().runOnUiThread(reloadModules);
 	}
 
 	@Override
@@ -71,6 +107,62 @@ public class ModulesFragment extends ListFragment {
 			startActivity(launchIntent);
 		else
 			Toast.makeText(getActivity(), getActivity().getString(R.string.module_no_ui), Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		InstalledModule installedModule = getItemFromContextMenuInfo(menuInfo);
+		menu.setHeaderTitle(installedModule.getAppName());
+		getActivity().getMenuInflater().inflate(R.menu.context_menu_modules, menu);
+
+		if (getSettingsIntent(installedModule.packageName) == null)
+			menu.removeItem(R.id.menu_launch);
+
+		Module downloadModule = mRepoLoader.getModule(installedModule.packageName);
+		if (downloadModule == null) {
+			menu.removeItem(R.id.menu_download_updates);
+			menu.removeItem(R.id.menu_support);
+		} else if (NavUtil.parseURL(downloadModule.support) == null) {
+			menu.removeItem(R.id.menu_support);
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		InstalledModule module = getItemFromContextMenuInfo(item.getMenuInfo());
+		switch (item.getItemId()) {
+			case R.id.menu_launch:
+				startActivity(getSettingsIntent(module.packageName));
+				return true;
+
+			case R.id.menu_download_updates:
+				Intent detailsIntent = new Intent(getActivity(), DownloadDetailsActivity.class);
+				detailsIntent.setData(Uri.fromParts("package", module.packageName, null));
+				startActivity(detailsIntent);
+				return true;
+
+			case R.id.menu_support:
+				Module downloadModule = mRepoLoader.getModule(module.packageName);
+				NavUtil.startURL(getActivity(), downloadModule.support);
+				return true;
+
+			case R.id.menu_app_info:
+				startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+					Uri.fromParts("package", module.packageName, null)));
+				return true;
+
+			case R.id.menu_uninstall:
+				startActivity(new Intent(Intent.ACTION_UNINSTALL_PACKAGE,
+					Uri.fromParts("package", module.packageName, null)));
+				return true;
+		}
+
+		return false;
+	}
+
+	private InstalledModule getItemFromContextMenuInfo(ContextMenuInfo menuInfo) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		return (InstalledModule) getListAdapter().getItem(info.position);
 	}
 
 	private Intent getSettingsIntent(String packageName) {
@@ -143,19 +235,19 @@ public class ModulesFragment extends ListFragment {
 			checkbox.setChecked(mModuleUtil.isModuleEnabled(item.packageName));
 			TextView warningText = (TextView) view.findViewById(R.id.warning);
 
-			if (item.minVersion == null) {
+			if (item.minVersion == 0) {
 				checkbox.setEnabled(false);
 				warningText.setText(getString(R.string.no_min_version_specified));
 				warningText.setVisibility(View.VISIBLE);
-			} else if (installedXposedVersion != null && PackageChangeReceiver.compareVersions(item.minVersion, installedXposedVersion) > 0) {
+			} else if (installedXposedVersion != 0 && item.minVersion > installedXposedVersion) {
 				checkbox.setEnabled(false);
 				warningText.setText(String.format(getString(R.string.warning_xposed_min_version), 
-						PackageChangeReceiver.trimVersion(item.minVersion)));
+						item.minVersion));
 				warningText.setVisibility(View.VISIBLE);
-			} else if (PackageChangeReceiver.compareVersions(item.minVersion, ModuleUtil.MIN_MODULE_VERSION) < 0) {
+			} else if (item.minVersion < ModuleUtil.MIN_MODULE_VERSION) {
 				checkbox.setEnabled(false);
 				warningText.setText(String.format(getString(R.string.warning_min_version_too_low), 
-						PackageChangeReceiver.trimVersion(item.minVersion), ModuleUtil.MIN_MODULE_VERSION));
+						item.minVersion, ModuleUtil.MIN_MODULE_VERSION));
 				warningText.setVisibility(View.VISIBLE);
 			} else {
 				checkbox.setEnabled(true);

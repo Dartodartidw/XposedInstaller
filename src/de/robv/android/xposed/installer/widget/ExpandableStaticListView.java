@@ -114,6 +114,8 @@ public class ExpandableStaticListView extends LinearLayout {
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		super.dispatchDraw(canvas);
+		if (mGroups == null)
+			return;
 
 		if (mGroups == null) {
 			return;

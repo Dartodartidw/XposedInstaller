@@ -9,13 +9,13 @@ import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ListView;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 
@@ -41,10 +42,12 @@ import de.robv.android.xposed.installer.repo.ModuleVersion;
 import de.robv.android.xposed.installer.util.AnimatorUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil.InstalledModule;
+import de.robv.android.xposed.installer.util.ModuleUtil.ModuleListener;
+import de.robv.android.xposed.installer.util.NavUtil;
 import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.util.RepoLoader.RepoListener;
 
-public class DownloadFragment extends Fragment implements RepoListener {
+public class DownloadFragment extends Fragment implements RepoListener, ModuleListener {
 	private SharedPreferences mPref;
 	private DownloadsAdapter mAdapter;
 	private String mFilterText;
@@ -72,8 +75,8 @@ public class DownloadFragment extends Fragment implements RepoListener {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Activity activity = getActivity();
-		if (activity instanceof XposedInstallerActivity)
-			((XposedInstallerActivity) activity).setNavItem(XposedInstallerActivity.TAB_DOWNLOAD, null);
+		if (activity instanceof XposedDropdownNavActivity)
+			((XposedDropdownNavActivity) activity).setNavItem(XposedDropdownNavActivity.TAB_DOWNLOAD);
 
 	}
 
@@ -83,21 +86,18 @@ public class DownloadFragment extends Fragment implements RepoListener {
 		ListView lv = (ListView) v.findViewById(R.id.listModules);
 
 		mRepoLoader.addListener(this, true);
+		mModuleUtil.addListener(this);
 		lv.setAdapter(mAdapter);
 		
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				DownloadItem item = mAdapter.getItem(position);
-				DownloadDetailsFragment fragment = DownloadDetailsFragment.newInstance(item.packageName);
-
-				FragmentTransaction tx = getFragmentManager().beginTransaction();
-				// requires onCreateAnimator() to be overridden!
-				tx.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
-						R.anim.slide_in_left, R.anim.slide_out_right);
-				tx.replace(R.id.action_bar_activity_content, fragment);
-				tx.addToBackStack("downloads_overview");
-				tx.commit();
+				Intent detailsIntent = new Intent(getActivity(), DownloadDetailsActivity.class);
+				detailsIntent.setData(Uri.fromParts("package", item.packageName, null));
+				detailsIntent.putExtra(NavUtil.FINISH_ON_UP_NAVIGATION, true);
+				startActivity(detailsIntent);
+				NavUtil.setTransitionSlideEnter(getActivity());
 			}
 		});
 		lv.setOnKeyListener(new View.OnKeyListener() {
@@ -120,6 +120,7 @@ public class DownloadFragment extends Fragment implements RepoListener {
 	public void onDestroyView() {
 		super.onDestroyView();
 		mRepoLoader.removeListener(this);
+		mModuleUtil.removeListener(this);
 	}
 
 	@Override
@@ -213,6 +214,27 @@ public class DownloadFragment extends Fragment implements RepoListener {
 				}
 			}
 		});
+	}
+
+	private void notifyDataSetChanged() {
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (mAdapter) {
+					mAdapter.notifyDataSetChanged();
+				}
+			}
+		});
+	}
+
+	@Override
+	public void onSingleInstalledModuleReloaded(ModuleUtil moduleUtil, String packageName, InstalledModule module) {
+		notifyDataSetChanged();
+	}
+
+	@Override
+	public void onInstalledModulesReloaded(ModuleUtil moduleUtil) {
+		notifyDataSetChanged();
 	}
 
 

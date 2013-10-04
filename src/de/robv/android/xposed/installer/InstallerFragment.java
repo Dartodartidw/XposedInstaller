@@ -22,6 +22,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.FileUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +35,14 @@ public class InstallerFragment extends Fragment {
 	private String APP_PROCESS_NAME = null;
 	private String XPOSEDTEST_NAME = null;
 	private final String BINARIES_FOLDER = getBinariesFolder();
+	private static final String JAR_PATH = XposedApp.BASE_DIR + "bin/XposedBridge.jar";
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Activity activity = getActivity();
-		if (activity instanceof XposedInstallerActivity)
-			((XposedInstallerActivity) activity).setNavItem(XposedInstallerActivity.TAB_INSTALL, null);
+		if (activity instanceof XposedDropdownNavActivity)
+			((XposedDropdownNavActivity) activity).setNavItem(XposedDropdownNavActivity.TAB_INSTALL);
 	}
 
 	@Override
@@ -55,7 +57,6 @@ public class InstallerFragment extends Fragment {
 
 		final Button btnInstall = (Button) v.findViewById(R.id.btnInstall);
 		final Button btnUninstall = (Button) v.findViewById(R.id.btnUninstall);
-		final Button btnCleanup = (Button) v.findViewById(R.id.btnCleanup);
 		final Button btnSoftReboot = (Button) v.findViewById(R.id.btnSoftReboot);
 		final Button btnReboot = (Button) v.findViewById(R.id.btnReboot);
 		
@@ -87,25 +88,22 @@ public class InstallerFragment extends Fragment {
 			}
 		}
 		
-		final String none = getString(R.string.none);
-		final String appProcessInstalledVersion = getInstalledAppProcessVersion(none);
-		final String appProcessLatestVersion = getLatestAppProcessVersion(none);
-		final String jarInstalledVersion = getJarInstalledVersion(none);
-		final String jarLatestVersion = getJarLatestVersion(none);
+		final int appProcessInstalledVersion = getInstalledAppProcessVersion();
+		final int appProcessLatestVersion = getLatestAppProcessVersion();
+		final int jarInstalledVersion = getJarInstalledVersion();
+		final int jarLatestVersion = getJarLatestVersion();
 		
-		txtAppProcessInstalledVersion.setText(appProcessInstalledVersion);
-		txtAppProcessLatestVersion.setText(appProcessLatestVersion);
-		txtJarInstalledVersion.setText(jarInstalledVersion);
-		txtJarLatestVersion.setText(jarLatestVersion);
+		txtAppProcessInstalledVersion.setText(versionToText(appProcessInstalledVersion));
+		txtAppProcessLatestVersion.setText(versionToText(appProcessLatestVersion));
+		txtJarInstalledVersion.setText(versionToText(jarInstalledVersion));
+		txtJarLatestVersion.setText(versionToText(jarLatestVersion));
 
-		if (appProcessInstalledVersion.equals(none)
-				|| PackageChangeReceiver.compareVersions(appProcessInstalledVersion, appProcessLatestVersion) < 0)
+		if (appProcessInstalledVersion < appProcessLatestVersion)
 			txtAppProcessInstalledVersion.setTextColor(Color.RED);
 		else
 			txtAppProcessInstalledVersion.setTextColor(Color.GREEN);
 		
-		if (jarInstalledVersion.equals(none)
-				|| PackageChangeReceiver.compareVersions(jarInstalledVersion, jarLatestVersion) < 0)
+		if (jarInstalledVersion < jarLatestVersion)
 			txtJarInstalledVersion.setTextColor(Color.RED);
 		else
 			txtJarInstalledVersion.setTextColor(Color.GREEN);
@@ -116,9 +114,9 @@ public class InstallerFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					showAlert(install());
-					txtAppProcessInstalledVersion.setText(getInstalledAppProcessVersion(none));
+					txtAppProcessInstalledVersion.setText(versionToText(getInstalledAppProcessVersion()));
 					txtAppProcessInstalledVersion.setTextColor(Color.GREEN);
-					txtJarInstalledVersion.setText(getJarInstalledVersion(none));
+					txtJarInstalledVersion.setText(versionToText(getJarInstalledVersion()));
 					txtJarInstalledVersion.setTextColor(Color.GREEN);
 
 					ModuleUtil.getInstance().updateModulesList();
@@ -134,25 +132,10 @@ public class InstallerFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				showAlert(uninstall());
-				txtAppProcessInstalledVersion.setText(getInstalledAppProcessVersion(none));
+				txtAppProcessInstalledVersion.setText(versionToText(getInstalledAppProcessVersion()));
 				txtAppProcessInstalledVersion.setTextColor(Color.RED);
-				txtJarInstalledVersion.setText(getJarInstalledVersion(none));
+				txtJarInstalledVersion.setText(versionToText(getJarInstalledVersion()));
 				txtJarInstalledVersion.setTextColor(Color.RED);
-			}
-		});
-		btnCleanup.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				areYouSure(R.string.cleanup, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						showAlert(cleanup());
-						txtAppProcessInstalledVersion.setText(getInstalledAppProcessVersion(none));
-						txtAppProcessInstalledVersion.setTextColor(Color.RED);
-						txtJarInstalledVersion.setText(getJarInstalledVersion(none));
-						txtJarInstalledVersion.setTextColor(Color.RED);
-					}
-				});
 			}
 		});
 		btnReboot.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +164,11 @@ public class InstallerFragment extends Fragment {
 		
 		return v;
 	}
-	
+
+	private String versionToText(int version) {
+		return (version == 0) ? getString(R.string.none) : Integer.toString(version);
+	}
+
 	private void showAlert(String result) {
 		new AlertDialog.Builder(getActivity())
         .setMessage(result)
@@ -226,11 +213,10 @@ public class InstallerFragment extends Fragment {
 			if (XPOSEDTEST_NAME == null)
 				return false;
 			
-			File testFile = writeAssetToCacheFile(XPOSEDTEST_NAME, "xposedtest");
+			File testFile = writeAssetToCacheFile(XPOSEDTEST_NAME, "xposedtest", 00700);
 			if (testFile == null)
 				return false;
 			
-			testFile.setExecutable(true);			
 			Process p = Runtime.getRuntime().exec(testFile.getAbsolutePath());
 			
 			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -250,11 +236,10 @@ public class InstallerFragment extends Fragment {
 			if (APP_PROCESS_NAME == null)
 				return false;
 			
-			File testFile = writeAssetToCacheFile(APP_PROCESS_NAME, "app_process");
+			File testFile = writeAssetToCacheFile(APP_PROCESS_NAME, "app_process", 00700);
 			if (testFile == null)
 				return false;
 
-			testFile.setExecutable(true);
 			Process p = Runtime.getRuntime().exec(new String[] { testFile.getAbsolutePath(), "--xposedversion" });
 
 			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -269,31 +254,26 @@ public class InstallerFragment extends Fragment {
 		}
 	}
 
-	private String getInstalledAppProcessVersion(String defaultValue) {
+	private int getInstalledAppProcessVersion() {
 		try {
-			return getAppProcessVersion(
-					new FileInputStream("/system/bin/app_process"),
-					defaultValue);
+			return getAppProcessVersion(new FileInputStream("/system/bin/app_process"));
 		} catch (IOException e) {
-			return getString(R.string.none);
+			return 0;
 		}
 	}
 	
-	private String getLatestAppProcessVersion(String defaultValue) {
+	private int getLatestAppProcessVersion() {
 		if (APP_PROCESS_NAME == null)
-			return defaultValue;
+			return 0;
 		
 		try {
-			return getAppProcessVersion(
-					getActivity().getAssets().open(APP_PROCESS_NAME),
-					defaultValue);
+			return getAppProcessVersion(getActivity().getAssets().open(APP_PROCESS_NAME));
 		} catch (Exception e) {
-			return defaultValue;
+			return 0;
 		}
 	}
 	
-	private String getAppProcessVersion(InputStream is, String defaultValue) throws IOException {
-		
+	private int getAppProcessVersion(InputStream is) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String line;
 		while ((line = br.readLine()) != null) {
@@ -302,33 +282,33 @@ public class InstallerFragment extends Fragment {
 			Matcher m = PATTERN_APP_PROCESS_VERSION.matcher(line);
 			if (m.find()) {
 				is.close();
-				return m.group(1);
+				return ModuleUtil.extractIntPart(m.group(1));
 			}
 		}
 		is.close();
-		return defaultValue;
+		return 0;
 	}
 	
-	public static String getJarInstalledVersion(String defaultValue) {
+	public static int getJarInstalledVersion() {
 		try {
-			if (new File("/data/xposed/XposedBridge.jar.newversion").exists())
-				return getJarVersion(new FileInputStream("/data/xposed/XposedBridge.jar.newversion"), defaultValue);
+			if (new File(JAR_PATH + ".newversion").exists())
+				return getJarVersion(new FileInputStream(JAR_PATH + ".newversion"));
 			else
-				return getJarVersion(new FileInputStream("/data/xposed/XposedBridge.jar"), defaultValue);
+				return getJarVersion(new FileInputStream(JAR_PATH));
 		} catch (IOException e) {
-			return defaultValue;
+			return 0;
 		}
 	}
 	
-	private String getJarLatestVersion(String defaultValue) {
+	private int getJarLatestVersion() {
 		try {
-			return getJarVersion(getActivity().getAssets().open("XposedBridge.jar"), defaultValue);
+			return getJarVersion(getActivity().getAssets().open("XposedBridge.jar"));
 		} catch (IOException e) {
-			return defaultValue;
+			return 0;
 		}
 	}
 	
-	public static String getJarVersion(InputStream is, String defaultValue) throws IOException {
+	public static int getJarVersion(InputStream is) throws IOException {
 		JarInputStream jis = new JarInputStream(is);
 		JarEntry entry;
 		try {
@@ -340,41 +320,40 @@ public class InstallerFragment extends Fragment {
 				String version = br.readLine();
 				is.close();
 				br.close();
-				return version;
+				return ModuleUtil.extractIntPart(version);
 			}
 		} finally {
 			try {
 				jis.close();
 			} catch (Exception e) { }
 		}
-		return defaultValue;
+		return 0;
 	}
 	
 	private String install() {
-		File appProcessFile = writeAssetToCacheFile(APP_PROCESS_NAME, "app_process");
+		File appProcessFile = writeAssetToCacheFile(APP_PROCESS_NAME, "app_process", 00700);
 		if (appProcessFile == null)
 			return "Could not find asset \"app_process\"";
 		
-		File jarFile = writeAssetToCacheFile("XposedBridge.jar");
+		File jarFile = writeAssetToFile("XposedBridge.jar", new File(JAR_PATH + ".newversion"), 00644);
 		if (jarFile == null)
 			return "Could not find asset \"XposedBridge.jar\"";
 
-		writeAssetToSdcardFile("Xposed-Disabler-Recovery.zip");
+		writeAssetToFile(APP_PROCESS_NAME, new File(XposedApp.BASE_DIR + "bin/app_process"), 00600);
+		writeAssetToSdcardFile("Xposed-Disabler-Recovery.zip", 00644);
 		
 		String result = executeScript("install.sh");
 		
 		appProcessFile.delete();
-		jarFile.delete();
 		
 		return result;
 	}
 	
 	private String uninstall() {
+		new File(JAR_PATH).delete();
+		new File(JAR_PATH + ".newversion").delete();
+		new File(XposedApp.BASE_DIR + "bin/app_process").delete();
 		return executeScript("uninstall.sh");
-	}
-	
-	private String cleanup() {
-		return executeScript("cleanup.sh");
 	}
 	
 	private String softReboot() {
@@ -386,29 +365,22 @@ public class InstallerFragment extends Fragment {
 	}
 	
 	private String executeScript(String name) {
-		File scriptFile = writeAssetToCacheFile(name);
+		File scriptFile = writeAssetToCacheFile(name, 00700);
 		if (scriptFile == null)
 			return "Could not find asset \"" + name + "\"";
 		
-		File busybox = writeAssetToCacheFile(BINARIES_FOLDER + "busybox-xposed", "busybox-xposed");
+		File busybox = writeAssetToCacheFile(BINARIES_FOLDER + "busybox-xposed", "busybox-xposed", 00700);
 		if (busybox == null) {
 			scriptFile.delete();
 			return "Could not find asset \"busybox-xposed\"";
 		}
-		
-		scriptFile.setReadable(true, false);
-		scriptFile.setExecutable(true, false);
-		
-		busybox.setReadable(true, false);
-		busybox.setExecutable(true, false);
 		
 		try {
 			Process p = Runtime.getRuntime().exec(
 					new String[] {
 						"su",
 						"-c",
-						"cd " + getActivity().getCacheDir() + "; "
-							+ scriptFile.getAbsolutePath() + " " + android.os.Process.myUid() + " 2>&1"
+						scriptFile.getAbsolutePath() + " 2>&1"
 					});
 			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedReader stderr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -434,18 +406,30 @@ public class InstallerFragment extends Fragment {
 			busybox.delete();
 		}
 	}
-	
-	private File writeAssetToCacheFile(String name) {
-		return writeAssetToCacheFile(name, name);
+
+	private File writeAssetToCacheFile(String name, int mode) {
+		return writeAssetToCacheFile(name, name, mode);
 	}
 
-	private File writeAssetToCacheFile(String assetName, String fileName) {
-		File file = null;
+	private File writeAssetToCacheFile(String assetName, String fileName, int mode) {
+		return writeAssetToFile(assetName, new File(getActivity().getCacheDir(), fileName), mode);
+	}
+
+	private File writeAssetToSdcardFile(String name, int mode) {
+		return writeAssetToSdcardFile(name, name, mode);
+	}
+
+	private File writeAssetToSdcardFile(String assetName, String fileName, int mode) {
+		File dir = Environment.getExternalStorageDirectory();
+		dir.mkdirs();
+		return writeAssetToFile(assetName, new File(dir, fileName), mode);
+	}
+
+	private File writeAssetToFile(String assetName, File targetFile, int mode) {
 		try {
 			InputStream in = getActivity().getAssets().open(assetName);
-			file = new File(getActivity().getCacheDir(), fileName);
-			FileOutputStream out = new FileOutputStream(file);
-			
+			FileOutputStream out = new FileOutputStream(targetFile);
+
 			byte[] buffer = new byte[1024];
 			int len;
 			while ((len = in.read(buffer)) > 0){
@@ -453,46 +437,16 @@ public class InstallerFragment extends Fragment {
 			}
 			in.close();
 			out.close();
-			
-			return file;
+
+			FileUtils.setPermissions(targetFile.getAbsolutePath(), mode, -1, -1);
+
+			return targetFile;
 		} catch (IOException e) {
 			e.printStackTrace();
-			if (file != null)
-				file.delete();
-			
+			if (targetFile != null)
+				targetFile.delete();
+
 			return null;
 		}
 	}
-
-	private boolean writeAssetToSdcardFile(String name) {
-		return writeAssetToSdcardFile(name, name);
-	}
-
-	private boolean writeAssetToSdcardFile(String assetName, String fileName) {
-		File file = null;
-		try {
-			InputStream in = getActivity().getAssets().open(assetName);
-			File dir = Environment.getExternalStorageDirectory();
-			dir.mkdirs();
-			file = new File(dir, fileName);
-			FileOutputStream out = new FileOutputStream(file);
-
-			byte[] buffer = new byte[1024];
-			int len;
-			while ((len = in.read(buffer)) > 0){
-				out.write(buffer, 0, len);
-			}
-			in.close();
-			out.close();
-
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			if (file != null)
-				file.delete();
-
-			return false;
-		}
-	}
-
 }
