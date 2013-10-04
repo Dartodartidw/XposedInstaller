@@ -35,6 +35,8 @@ public abstract class XposedDropdownNavActivity extends XposedBaseActivity {
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
+		setContentView(R.layout.abc_screen);
+
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancelAll();
 
