@@ -117,10 +117,6 @@ public class ExpandableStaticListView extends LinearLayout {
 		if (mGroups == null)
 			return;
 
-		if (mGroups == null) {
-			return;
-		}
-
 		for (int i = 0; i < mGroups.length; i++) {
 			Drawable indicator = mExpandedGroups[i] ? mIndicatorExpanded : mIndicatorCollapsed;
 			View v = mGroups[i];
