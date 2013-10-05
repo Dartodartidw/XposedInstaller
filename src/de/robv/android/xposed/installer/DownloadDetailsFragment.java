@@ -2,8 +2,9 @@ package de.robv.android.xposed.installer;
 
 import java.io.File;
 
-import android.animation.Animator;
+import android.view.animation.Animation;
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -117,7 +118,7 @@ public class DownloadDetailsFragment extends Fragment {
 	}
 
 	@Override
-	public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
 		return AnimatorUtil.createSlideAnimation(this, nextAnim);
 	}
 

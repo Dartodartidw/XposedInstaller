@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.animation.Animator;
+import android.view.animation.Animation;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.content.Context;
@@ -189,7 +190,7 @@ public class DownloadFragment extends Fragment implements RepoListener {
 	}
 
 	@Override
-	public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
 		return AnimatorUtil.createSlideAnimation(this, nextAnim);
 	}
 	
