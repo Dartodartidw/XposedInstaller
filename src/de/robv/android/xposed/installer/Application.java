@@ -2,7 +2,6 @@ package de.robv.android.xposed.installer;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 public abstract class Application extends android.app.Application {
