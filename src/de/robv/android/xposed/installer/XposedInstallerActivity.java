@@ -36,7 +36,7 @@ public class XposedInstallerActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.abc_screen);
         findViewById(R.id.title_container).setVisibility(android.view.View.GONE);

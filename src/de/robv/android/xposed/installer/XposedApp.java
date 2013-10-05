@@ -1,7 +1,6 @@
 package de.robv.android.xposed.installer;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -63,7 +62,7 @@ public class XposedApp extends Application implements Application.ActivityLifecy
 			public void run() {
 				synchronized (XposedApp.this) {
 					if (mCurrentActivity != null)
-						mCurrentActivity.setProgressBarIndeterminateVisibility(isLoading);
+						mCurrentActivity.setSupportProgressBarIndeterminateVisibility(isLoading);
 				}
 			}
 		});
@@ -86,7 +85,7 @@ public class XposedApp extends Application implements Application.ActivityLifecy
 
 	@Override
 	public synchronized void onActivityPaused(Activity activity) {
-		activity.setProgressBarIndeterminateVisibility(false);
+		activity.setSupportProgressBarIndeterminateVisibility(false);
 		mCurrentActivity = null;
 	}
 
