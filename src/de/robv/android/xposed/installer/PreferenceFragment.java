@@ -413,7 +413,7 @@ public abstract class PreferenceFragment extends Fragment {
     @SuppressWarnings("unchecked")
     private <T> T callConstructor(Class<T> type, Class<?>[] types, Object[] args) {
         try {
-            Constructor<?> constructor = PreferenceManager.class.getConstructor(types);
+            Constructor<?> constructor = PreferenceManager.class.getDeclaredConstructor(types);
             constructor.setAccessible(true);
             return (T) constructor.newInstance(args);
         } catch (NoSuchMethodException e) {
