@@ -84,16 +84,6 @@
         </TableLayout>
 
         <TextView
-            android:id="@+id/miui_warning"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:text="@string/miui_warning"
-            android:textColor="#ffff0000"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <TextView
             android:id="@+id/framework_install_errors"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,27 +103,19 @@
             android:layout_height="wrap_content"
             android:text="@string/uninstall" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btnSoftReboot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp" >
+            android:layout_marginTop="10dp"
+            android:text="@string/soft_reboot" />
 
-            <Button
-                android:id="@+id/btnSoftReboot"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/soft_reboot"
-                tools:ignore="ButtonStyle" />
+        <Button
+            android:id="@+id/btnReboot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/reboot" />
 
-            <Button
-                android:id="@+id/btnReboot"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reboot"
-                tools:ignore="ButtonStyle" />
-        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
