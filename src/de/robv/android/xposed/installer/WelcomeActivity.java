@@ -30,15 +30,16 @@ public class WelcomeActivity extends XposedBaseActivity implements ModuleListene
 		mRepoLoader = RepoLoader.getInstance();
 
 		setContentView(R.layout.activity_welcome);
-		
+
 		mAdapter = new WelcomeAdapter(this);
 		// TODO add proper description texts and load them from resources, add icons, make it more fancy, ... 
 		mAdapter.add(new WelcomeItem(R.string.tabInstall, R.string.tabInstallDescription));
 		mAdapter.add(new WelcomeItem(R.string.tabModules, R.string.tabModulesDescription));
 		mAdapter.add(new WelcomeItem(R.string.tabDownload, R.string.tabDownloadDescription));
 		mAdapter.add(new WelcomeItem(R.string.tabSettings, R.string.tabSettingsDescription));
+		mAdapter.add(new WelcomeItem(R.string.tabLogs, R.string.tabLogsDescription));
 		mAdapter.add(new WelcomeItem(R.string.tabAbout, R.string.tabAboutDescription));
-		
+
 		ListView lv = (ListView) findViewById(R.id.welcome_list);
 		lv.setAdapter(mAdapter);
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -91,43 +92,52 @@ public class WelcomeActivity extends XposedBaseActivity implements ModuleListene
 
 	class WelcomeAdapter extends ArrayAdapter<WelcomeItem> {
 		public WelcomeAdapter(Context context) {
-	        super(context, R.layout.list_item_welcome, android.R.id.text1);
-        }
-		
+			super(context, R.layout.list_item_welcome, android.R.id.text1);
+		}
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-		    View view = super.getView(position, convertView, parent);
-		    WelcomeItem item = getItem(position);
-		    
-		    TextView description = (TextView) view.findViewById(android.R.id.text2);
-		    description.setText(item.description);
+			View view = super.getView(position, convertView, parent);
+			WelcomeItem item = getItem(position);
 
-		    boolean frameworkUpdateAvailable = false;
-		    boolean moduleUpdateAvailable = false;
-		    if (position == XposedInstallerActivity.TAB_DOWNLOAD) {
-				frameworkUpdateAvailable = mRepoLoader.hasFrameworkUpdate();
+			TextView description = (TextView) view.findViewById(android.R.id.text2);
+			description.setText(item.description);
+
+			boolean xposedActive = true;
+			String frameworkUpdateVersion = null;
+			boolean moduleUpdateAvailable = false;
+			if (position == XposedInstallerActivity.TAB_INSTALL) {
+				xposedActive = XposedApp.getActiveXposedVersion() >= InstallerFragment.getJarLatestVersion();
+			} else if (position == XposedInstallerActivity.TAB_DOWNLOAD) {
+				frameworkUpdateVersion = mRepoLoader.getFrameworkUpdateVersion();
 				moduleUpdateAvailable = mRepoLoader.hasModuleUpdates();
-		    }
 
-		    view.findViewById(R.id.txtFrameworkUpdateAvailable).setVisibility(frameworkUpdateAvailable ? View.VISIBLE : View.GONE);
-		    view.findViewById(R.id.txtUpdateAvailable).setVisibility(moduleUpdateAvailable ? View.VISIBLE : View.GONE);
+				if (frameworkUpdateVersion != null) {
+					((TextView) view.findViewById(R.id.txtFrameworkUpdateAvailable)).setText(
+						getResources().getString(R.string.welcome_framework_update_available, (String)frameworkUpdateVersion));
+				}
+			}
 
-		    return view;
+			view.findViewById(R.id.txtXposedNotActive).setVisibility(!xposedActive ? View.VISIBLE : View.GONE);
+			view.findViewById(R.id.txtFrameworkUpdateAvailable).setVisibility(frameworkUpdateVersion != null ? View.VISIBLE : View.GONE);
+			view.findViewById(R.id.txtUpdateAvailable).setVisibility(moduleUpdateAvailable ? View.VISIBLE : View.GONE);
+
+			return view;
 		}
 	}
 
 	class WelcomeItem {
 		public final String title;
 		public final String description;
-		
+
 		protected WelcomeItem(int titleResId, int descriptionResId) {
-	        this.title = getString(titleResId);
-	        this.description = getString(descriptionResId);
-        }
-		
+			this.title = getString(titleResId);
+			this.description = getString(descriptionResId);
+		}
+
 		@Override
 		public String toString() {
-		    return title;
+			return title;
 		}
 	}
 }

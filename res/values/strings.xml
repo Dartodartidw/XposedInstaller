@@ -3,6 +3,9 @@
 
     <!-- General/various strings -->
     <string name="app_name">Xposed Installer</string>
+    <string name="menuSend">Send</string>
+    <string name="menuSaveToSd">Save to SD card</string>
+    <string name="xposed_not_active">The latest version of Xposed is currently not active. Did you install the framework and reboot?</string>
 
     <!-- Welcome screen / main sections -->
     <string name="welcome">Welcome to the <b>Xposed Installer</b>!\nPlease choose what you want to do:</string>
@@ -12,10 +15,12 @@
     <string name="tabModulesDescription">The framework itself doesn\'t add any functionality. You need modules for that. In this section you can activate modules after you have installed them.</string>
     <string name="tabDownload">Download</string>
     <string name="tabDownloadDescription">This section gives you access to a repository of modules, so you can search and download the ones you like and keep them up to date.</string>
-    <string name="welcome_framework_update_available">An update for the Xposed framework is available.</string>
+    <string name="welcome_framework_update_available">An update for the Xposed framework is available (%s).</string>
     <string name="welcome_update_available">One or more update(s) for modules available.</string>
     <string name="tabSettings">Settings</string>
     <string name="tabSettingsDescription">Go to this section to configure the Xposed Installer and framework.</string>
+    <string name="tabLogs">Logs</string>
+    <string name="tabLogsDescription">Display and save/send logs of the Xposed framework.</string>
     <string name="tabAbout">About</string>
     <string name="tabAboutDescription">Learn about the people who created Xposed, where to get support for this app etc.</string>
 
@@ -23,7 +28,6 @@
     <string name="install">Install/Update</string>
     <string name="uninstall">Uninstall</string>
     <string name="installedVersion">active</string>
-    <string name="none">---</string>
     <string name="latestVersion">bundled</string>
     <string name="versions">Versions:</string>
     <string name="soft_reboot">Soft reboot</string>
@@ -77,6 +81,11 @@
     <string name="settings_group_experimental" tools:ignore="UnusedResources">Experimental</string>
     <string name="settings_performance_experiment" tools:ignore="UnusedResources">Performance experiment</string>
     <string name="settings_performance_experiment_summary" tools:ignore="UnusedResources">If you enable this, your system performance might either increase, decrease or stay the same. Feel free to try it and report back which effect you see (or if there is none at all). You need to reinstall the framework and reboot after changing this.</string>
+
+    <!--  Logs tab  -->
+    <string name="logs_load_failed">Could not read log:</string>
+    <string name="logs_save_failed">Could not write log to SD card:</string>
+    <string name="sdcard_not_writable">SD card not found or not writable</string>
 
     <!-- About tab -->
     <string name="about_developers_label">Main developers:</string>
