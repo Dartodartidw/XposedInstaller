@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -147,6 +148,10 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 			menu.removeItem(R.id.menu_support);
 		} else if (NavUtil.parseURL(downloadModule.support) == null) {
 			menu.removeItem(R.id.menu_support);
+		}
+
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			menu.removeItem(R.id.menu_uninstall);
 		}
 	}
 
