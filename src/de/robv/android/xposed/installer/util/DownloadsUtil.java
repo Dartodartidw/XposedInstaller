@@ -34,7 +34,12 @@ public class DownloadsUtil {
 			request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
 		} else {
 			// on android-2.3, default writes to /cache, which cannot be read
-			request.setDestinationInExternalFilesDir(context, null, Uri.parse(url).getLastPathSegment());
+			String filename = Uri.parse(url).getLastPathSegment();
+			File file = new File(context.getExternalFilesDir(null), filename);
+			if (file.exists()) {
+				file.delete();
+			}
+			request.setDestinationInExternalFilesDir(context, null, filename);
 		}
 		long id = dm.enqueue(request);
 
@@ -57,15 +62,16 @@ public class DownloadsUtil {
 		int columnBytesDownloaded = c.getColumnIndexOrThrow(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
 		int columnReason = c.getColumnIndexOrThrow(DownloadManager.COLUMN_REASON);
 
-		String localFilename;
+		String localFilename = null;
 		if (columnFilename != -1) {
 			localFilename = c.getString(columnFilename);
-		} else {
-			localFilename = getLocalFilename(context, c);
 		}
 		if (localFilename != null && !localFilename.isEmpty() && !new File(localFilename).isFile()) {
 			dm.remove(c.getLong(columnId));
 			return null;
+		}
+		if (columnFilename == -1) {
+			localFilename = getLocalFilename(context, c);
 		}
 
 		return new DownloadInfo(
