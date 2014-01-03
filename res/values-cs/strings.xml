@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General/various strings -->
-    <string name="app_name">Xposed instalátor</string>
+    <string name="app_name">XposedGB instalátor</string>
     <string name="menuSend">Odeslat</string>
     <string name="menuSaveToSd">Uložit na SD kartu</string>
     <string name="xposed_not_active">Poslední verze Xposed frameworku není aktivní. Byl framework nainstalován a zařízení zrestartováno?</string>

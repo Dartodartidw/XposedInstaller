@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General/various strings -->
-    <string name="app_name">Instal·lador Xposed</string>
+    <string name="app_name">Instal·lador XposedGB</string>
 
     <!-- Welcome screen / main sections -->
     <string name="welcome">Benvingut a <b>Instal·lador Xposed</b>!\nEscull el que vols fer:</string>

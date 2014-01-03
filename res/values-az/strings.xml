@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- General/various strings -->
-    <string name="app_name">Xposed Yükləyici</string>
+    <string name="app_name">XposedGB Yükləyici</string>
     <string name="menuSend">Göndər</string>
     <string name="menuSaveToSd">Yaddaş kartında saxla</string>
     <string name="xposed_not_active">Xposed\'in son versiyası aktiv deyil. Framework\'i yükləmisiz və cihazı yenidən başlatmısız?</string>

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General/various strings -->
-    <string name="app_name">Xposed Telepítő</string>
+    <string name="app_name">XposedGB Telepítő</string>
 
     <!-- Welcome screen / main sections -->
     <string name="welcome">Üdvözöl az <b>Xposed Telepítő</b>!\nKérlek válaszd ki mit szeretnél tenni:</string>

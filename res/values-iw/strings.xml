@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General/various strings -->
-    <string name="app_name">התקנת Xposed</string>
+    <string name="app_name">התקנת XposedGB</string>
 
     <!-- Welcome screen / main sections -->
     <string name="welcome">ברוכים הבאים ל <b>התקנת Xposed</b>!\nאנא בחרו מה ברצונכם לעשות:</string>

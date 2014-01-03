@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Xposed Installer</string>
+    <string name="app_name">XposedGB Installer</string>
     <string name="welcome">Добро пожаловать в <b>Xposed Installer</b>!\nВыберите что бы Вы хотели сделать:</string>
     <string name="tabInstall">Фреймворк</string>
     <string name="tabInstallDescription">Здесь Вы можете настраивать Xposed framework, который необходим для работы модулей.</string>
