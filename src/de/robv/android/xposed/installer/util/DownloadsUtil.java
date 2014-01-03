@@ -245,18 +245,19 @@ public class DownloadsUtil {
 	/**
 	 * get local filename from <code>{@link android.provider.Downloads.Impl#_DATA}</code>.
 	 * @param context
-	 * @param c cursor for downloads, which should contain <code>{@link android.app.DownloadManager#COLUMN_LOCAL_URI}</code>
-	 * @return
+	 * @param cursor cursor for downloads, which should contain <code>{@link android.app.DownloadManager#COLUMN_LOCAL_URI}</code>
+	 * @return local filename for cursor
 	 */
-	private static String getLocalFilename(Context context, Cursor c) {
-		int columnLocalUri = c.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_URI);
-		Uri localUri = Uri.parse(c.getString(columnLocalUri));
+	private static String getLocalFilename(Context context, Cursor cursor) {
+		int columnLocalUri = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_URI);
+		Uri localUri = Uri.parse(cursor.getString(columnLocalUri));
 		if (localUri.getScheme().equalsIgnoreCase("file")) {
 			return localUri.getPath();
 		}
-		Cursor d = context.getContentResolver().query(localUri, new String[] { "_data" }, null, null, null);
-		if (d != null && d.moveToFirst()) {
-			return d.getString(d.getColumnIndex("_data"));
+		// shouldn't happen
+		Cursor _cursor = context.getContentResolver().query(localUri, new String[] { "_data" }, null, null, null);
+		if (_cursor != null && _cursor.moveToFirst()) {
+			return _cursor.getString(_cursor.getColumnIndex("_data"));
 		}
 		return null;
 	}
