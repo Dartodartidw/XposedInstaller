@@ -23,7 +23,7 @@
             android:id="@+id/about_developers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/about_developers"
+            android:text="@string/about_developers_gb"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView

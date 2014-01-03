@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="de.robv.android.xposed.installer"
     android:versionCode="25"
-    android:versionName="2.4.1" >
+    android:versionName="2.4.1-gb" >
 
     <uses-sdk
         android:minSdkVersion="10"
