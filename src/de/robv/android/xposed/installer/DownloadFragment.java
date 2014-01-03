@@ -2,6 +2,7 @@ package de.robv.android.xposed.installer;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -395,13 +396,17 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 			@Override
 			protected void publishResults(CharSequence constraint, FilterResults results) {
 				clear();
-				for (DownloadItem item : (List<DownloadItem>) results.values) {
-					add(item);
-				}
+				addAll((List<DownloadItem>) results.values);
 				if (results.count > 0) {
 					notifyDataSetChanged();
 				} else {
 					notifyDataSetInvalidated();
+				}
+			}
+
+			public void addAll(Collection<? extends DownloadItem> items) {
+				for (DownloadItem item : items) {
+					add(item);
 				}
 			}
 		}
