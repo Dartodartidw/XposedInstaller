@@ -45,7 +45,7 @@ public class DownloadView extends LinearLayout {
 				if (getContext().getExternalFilesDir(null) == null) {
 					Toast.makeText(getContext(), R.string.sdcard_not_writable, Toast.LENGTH_LONG).show();
 					return;
-				} 
+				}
 
 				mInfo = DownloadsUtil.add(getContext(), mTitle, mUrl, mCallback);
 				refreshViewFromUiThread();
