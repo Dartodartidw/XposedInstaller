@@ -23,7 +23,7 @@ public final class AnimatorUtil {
 	}
 
 	public static Animation createSlideAnimation(Fragment fragment, boolean left, boolean in) {
-		int parentWidth = fragment.getActivity().findViewById(R.id.action_bar_activity_content).getWidth();
+		int parentWidth = fragment.getActivity().findViewById(android.R.id.content).getWidth();
 		if (left)
 			parentWidth = -parentWidth;
 		

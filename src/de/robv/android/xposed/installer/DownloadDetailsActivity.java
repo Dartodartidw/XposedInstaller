@@ -13,7 +13,7 @@ public class DownloadDetailsActivity extends XposedDropdownNavActivity {
 		DownloadDetailsFragment detailsFragment = DownloadDetailsFragment.newInstance(packageName);
 
 		FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-		tx.replace(R.id.action_bar_activity_content, detailsFragment);
+		tx.replace(android.R.id.content, detailsFragment);
 		tx.commit();
 	}
 

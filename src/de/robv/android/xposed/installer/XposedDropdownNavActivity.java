@@ -36,9 +36,6 @@ public abstract class XposedDropdownNavActivity extends XposedBaseActivity {
 
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		setContentView(R.layout.abc_screen);
-		findViewById(R.id.title_container).setVisibility(android.view.View.GONE);
-
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		nm.cancelAll();
 
@@ -82,7 +79,7 @@ public abstract class XposedDropdownNavActivity extends XposedBaseActivity {
 				Fragment fragment = Fragment.instantiate(XposedDropdownNavActivity.this, fragmentClass);
 
 				FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-				tx.replace(R.id.action_bar_activity_content, fragment);
+				tx.replace(android.R.id.content, fragment);
 				currentNavItem = itemPosition;
 				tx.commit();
 
