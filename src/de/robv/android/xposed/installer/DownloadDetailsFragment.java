@@ -256,10 +256,6 @@ public class DownloadDetailsFragment extends Fragment {
 
 		@Override
 		public void onDownloadFinished(Context context, DownloadInfo info) {
-			if (info.localFilename == null) {
-				return;
-			}
-
 			File localFile = new File(info.localFilename);
 			if (!localFile.isFile())
 				return;
@@ -271,13 +267,11 @@ public class DownloadDetailsFragment extends Fragment {
 						Toast.makeText(context, context.getString(R.string.download_md5sum_incorrect,
 								actualMd5Sum, moduleVersion.md5sum), Toast.LENGTH_LONG).show();
 
-						localFile.delete();
 						return;
 					}
 				} catch (Exception e) {
 					Toast.makeText(context, context.getString(R.string.download_could_not_read_file,
 							e.getMessage()), Toast.LENGTH_LONG).show();
-					localFile.delete();
 					return;
 				}
 			}
@@ -287,7 +281,6 @@ public class DownloadDetailsFragment extends Fragment {
 
 			if (packageInfo == null) {
 				Toast.makeText(context, R.string.download_no_valid_apk, Toast.LENGTH_LONG).show();
-				localFile.delete();
 				return;
 			}
 
@@ -297,7 +290,6 @@ public class DownloadDetailsFragment extends Fragment {
 						packageInfo.packageName, moduleVersion.module.packageName),
 					Toast.LENGTH_LONG).show();
 
-				localFile.delete();
 				return;
 			}
 
@@ -311,7 +303,7 @@ public class DownloadDetailsFragment extends Fragment {
 			installIntent.setDataAndType(Uri.fromFile(localFile), DownloadsUtil.MIME_TYPE_APK);
 			//installIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
 			//installIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 				installIntent.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, context.getApplicationInfo().packageName);
 			}
 			context.startActivity(installIntent);
