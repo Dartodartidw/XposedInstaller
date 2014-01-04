@@ -104,22 +104,17 @@ public class WelcomeActivity extends XposedBaseActivity implements ModuleListene
 			description.setText(item.description);
 
 			boolean xposedActive = true;
-			String frameworkUpdateVersion = null;
+			boolean frameworkUpdateAvailable = false;
 			boolean moduleUpdateAvailable = false;
 			if (position == XposedInstallerActivity.TAB_INSTALL) {
 				xposedActive = XposedApp.getActiveXposedVersion() >= InstallerFragment.getJarLatestVersion();
 			} else if (position == XposedInstallerActivity.TAB_DOWNLOAD) {
-				frameworkUpdateVersion = mRepoLoader.getFrameworkUpdateVersion();
+				frameworkUpdateAvailable = mRepoLoader.hasFrameworkUpdate();
 				moduleUpdateAvailable = mRepoLoader.hasModuleUpdates();
-
-				if (frameworkUpdateVersion != null) {
-					((TextView) view.findViewById(R.id.txtFrameworkUpdateAvailable)).setText(
-						getResources().getString(R.string.welcome_framework_update_available, (String)frameworkUpdateVersion));
-				}
 			}
 
 			view.findViewById(R.id.txtXposedNotActive).setVisibility(!xposedActive ? View.VISIBLE : View.GONE);
-			view.findViewById(R.id.txtFrameworkUpdateAvailable).setVisibility(frameworkUpdateVersion != null ? View.VISIBLE : View.GONE);
+			view.findViewById(R.id.txtFrameworkUpdateAvailable).setVisibility(frameworkUpdateAvailable ? View.VISIBLE : View.GONE);
 			view.findViewById(R.id.txtUpdateAvailable).setVisibility(moduleUpdateAvailable ? View.VISIBLE : View.GONE);
 
 			return view;

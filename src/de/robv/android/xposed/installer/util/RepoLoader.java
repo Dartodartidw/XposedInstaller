@@ -82,11 +82,6 @@ public class RepoLoader {
 		return null;
 	}
 
-	public ModuleVersion getLatestVersion(String packageName) {
-		Module module = getModule(packageName);
-		return (module != null) ? getLatestVersion(module) : null;
-	}
-
 	public void triggerReload(final boolean force) {
 		mReloadTriggeredOnce = true;
 
@@ -205,20 +200,19 @@ public class RepoLoader {
 		return false;
 	}
 
-	public String getFrameworkUpdateVersion() {
+	public boolean hasFrameworkUpdate() {
 		if (!mApp.areDownloadsEnabled())
-			return null;
+			return false;
 
 		InstalledModule installed = ModuleUtil.getInstance().getFramework();
 		if (installed == null) // would be strange if this happened...
-			return null;
+			return false;
 
 		Module download = getModule(installed.packageName);
 		if (download == null)
-			return null;
+			return false;
 
-		ModuleVersion version = getLatestVersion(download);
-		return installed.isUpdate(version) ? version.name : null;
+		return installed.isUpdate(getLatestVersion(download));
 	}
 
 	private File getRepoCacheFile(String repo) {

@@ -126,10 +126,6 @@ public final class ModuleUtil {
 		return mFramework;
 	}
 
-	public String getFrameworkPackageName() {
-		return mFrameworkPackageName;
-	}
-
 	public boolean isFramework(String packageName) {
 		return mFrameworkPackageName.equals(packageName);
 	}
