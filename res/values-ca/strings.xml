@@ -5,19 +5,19 @@
     <string name="app_name">Instal·lador XposedGB</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">Benvingut a <b>Instal·lador Xposed</b>!\nEscull el que vols fer:</string>
+    <string name="welcome">Benvingut a <b>Instal·lador XposedGB</b>!\nEscull el que vols fer:</string>
     <string name="tabInstall">Framework</string>
-    <string name="tabInstallDescription">Aqui pots gestionar el Xposed Framework, que es necesari per a que tots els mòduls funcionin.</string>
+    <string name="tabInstallDescription">Aqui pots gestionar el XposedGB Framework, que es necesari per a que tots els mòduls funcionin.</string>
     <string name="tabModules">Mòduls</string>
-    <string name="tabModulesDescription">Xposed Framework en si no afegeix ninguna funcionalitat. Necesitara mòduls per això. En aquesta secciò pot activar mòduls després d\'haver-los instal·lat.</string>
+    <string name="tabModulesDescription">XposedGB Framework en si no afegeix ninguna funcionalitat. Necesitara mòduls per això. En aquesta secciò pot activar mòduls després d\'haver-los instal·lat.</string>
     <string name="tabDownload">Descarga</string>
     <string name="tabDownloadDescription">Aquesta secciò li permeteix accedir a un repositori de mòduls, pel que pot buscar i descarregar els que més li agradin i mantenir-los al dia.</string>
-    <string name="welcome_framework_update_available">Una actualització per Xposed Framework està disponible.</string>
+    <string name="welcome_framework_update_available">Una actualització per XposedGB Framework està disponible.</string>
     <string name="welcome_update_available">a o més actualitzacions per als mòduls estan disponibles.</string>
     <string name="tabSettings">Configuració</string>
-    <string name="tabSettingsDescription">Vine a aquesta secció per configurar l\'instal·lador Xposed i el framework.</string>
+    <string name="tabSettingsDescription">Vine a aquesta secció per configurar l\'instal·lador XposedGB i el framework.</string>
     <string name="tabAbout">Sobre</string>
-    <string name="tabAboutDescription">Informació sobre les persones que van crear Xposed, on obtenir ajuda per a aquesta aplicació, etc</string>
+    <string name="tabAboutDescription">Informació sobre les persones que van crear XposedGB, on obtenir ajuda per a aquesta aplicació, etc</string>
 
     <!-- Instal·ler tab -->
     <string name="install">Instal·lar / Actualitzar</string>
@@ -28,15 +28,15 @@
     <string name="soft_reboot">Reinici Software</string>
     <string name="reboot">Reinici</string>
     <string name="areyousure">Estàs segur?</string>
-    <string name="phone_not_compatible">Xposed no es (encara) compatible amb la versió d\'Android SDK %1$d o l\'arquitectura del seu procesador (%2$s).</string>
-    <string name="not_tested_but_compatible">Xposed no ha estat provat amb la versió d\'Android SDK %d, però sembla ser compatible. Vostè pot tractar d\'instal·lar-ho si es sent aventurer.</string>
+    <string name="phone_not_compatible">XposedGB no es (encara) compatible amb la versió d\'Android SDK %1$d o l\'arquitectura del seu procesador (%2$s).</string>
+    <string name="not_tested_but_compatible">XposedGB no ha estat provat amb la versió d\'Android SDK %d, però sembla ser compatible. Vostè pot tractar d\'instal·lar-ho si es sent aventurer.</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">Mòdul Xposed encara no està actiu</string>
+    <string name="module_is_not_activated_yet">Mòdul XposedGB encara no està actiu</string>
     <string name="module_empty_description">(No es va proporcionar descripció)</string>
     <string name="module_no_ui">Aquest mòdul no proporciona una interficie d\'usuari</string>
     <string name="no_xposed_modules_found">No es van trobar móduls!</string>
-    <string name="xposed_module_list_updated">l·lista de móduls Xposed actualitzada\nEls canvis s\'activaran reiniciant</string>
+    <string name="xposed_module_list_updated">l·lista de móduls XposedGB actualitzada\nEls canvis s\'activaran reiniciant</string>
     <string name="warning_xposed_min_version">Aquest módul requereix una versió més recent de XposedBridge (%d) i per tant no es pot activar.</string>
     <string name="no_min_version_specified">Aquest mòdul no especifica la versió de XposedBridge que necessita.</string>
     <string name="warning_min_version_too_low">Aquest mòdul va ser creat per a la versió %1$d de XposedBridge, però a causa d\'un canvi incompatible en la versió %2$d, ha estat desactivat.</string>
@@ -67,7 +67,7 @@
     <!-- Settings tab -->
     <string name="settings_group_download">Descarregar</string>
     <string name="settings_enable_downloads">Activar descarregues</string>
-    <string name="settings_enable_downloads_summary">Permetre a Instal·lador Xposed buscar actualitzacions i nous mòduls</string>
+    <string name="settings_enable_downloads_summary">Permetre a Instal·lador XposedGB buscar actualitzacions i nous mòduls</string>
     <string name="settings_group_experimental">Experimental</string>
     <string name="settings_performance_experiment">Performance experiment</string>
     <string name="settings_performance_experiment_summary">Si activeu això, el rendiment del sistema pot augmentar, disminuir o romandre igual. No dubteu a provar i informar l\'efecte que es veu (o si no n\'hi ha cap en absolut). Cal tornar a instal lar el Stock Framework i reiniciar després de canviar això.</string>
@@ -81,7 +81,7 @@
     <string name="about_version_label">Versió d\'aquesta aplicació:</string>
     <string name="about_source_label">Codi font:</string>
     <string name="about_support_label">Rep suport en:</string>
-    <string name="about_support_warning">Aquest enl·lac es per a Xposed Framework <b>només</b>! Si necesites ajuda amb un módul, <b>no</b> utilitzis aquest enl·lac, contacta amb l\'autor del módul.</string>
+    <string name="about_support_warning">Aquest enl·lac es per a XposedGB Framework <b>només</b>! Si necesites ajuda amb un módul, <b>no</b> utilitzis aquest enl·lac, contacta amb l\'autor del módul.</string>
     <string name="about_libraries_label">Llibreries utilitzades:</string>
 
     <!-- DownloadView -->

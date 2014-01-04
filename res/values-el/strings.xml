@@ -5,24 +5,24 @@
     <string name="app_name">Εγκατάσταση XposedGB</string>
     <string name="menuSend">Αποστολή</string>
     <string name="menuSaveToSd">Αποθήκευση στην κάρτα SD</string>
-    <string name="xposed_not_active">Η τελευταία έκδοση του Xposed δεν είναι ενεργή προς το παρόν. Εγκαταστήσατε το framework και επανεκκινήσατε;</string>
+    <string name="xposed_not_active">Η τελευταία έκδοση του XposedGB δεν είναι ενεργή προς το παρόν. Εγκαταστήσατε το framework και επανεκκινήσατε;</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">Καλώς ήρθατε στην <b>Εγκατάσταση του Xposed</b>!\nΠαρακαλώ διαλέξτε τι θέλετε να κάνετε:</string>
+    <string name="welcome">Καλώς ήρθατε στην <b>Εγκατάσταση του XposedGB</b>!\nΠαρακαλώ διαλέξτε τι θέλετε να κάνετε:</string>
     <string name="tabInstall">Framework</string>
-    <string name="tabInstallDescription">Εδώ μπορείτε να διαχειριστείτε το Xposed framework, το οποίο είναι απαραίτητο για οποιοδήποτε module να δουλέψει.</string>
+    <string name="tabInstallDescription">Εδώ μπορείτε να διαχειριστείτε το XposedGB framework, το οποίο είναι απαραίτητο για οποιοδήποτε module να δουλέψει.</string>
     <string name="tabModules">Modules</string>
     <string name="tabModulesDescription">Το framework δεν προσθέτει καμία λειτουργικότητα από μόνο του. Γι\' αυτό χρειάζεστε modules. Σε αυτό το τμήμα μπορείτε να ενεργοποιήσετε modules αφού τα εγκαταστήσετε πρώτα.</string>
     <string name="tabDownload">Κατέβασμα</string>
     <string name="tabDownloadDescription">Αυτό το τμήμα σας δίνει πρόσβαση σε ένα αποθετήριο (repository) modules, έτσι ώστε να μπορέσετε να ψάξετε και να κατεβάσετε όποια σας αρέσουν και να τα έχετε αναβαθμισμένα.</string>
-    <string name="welcome_framework_update_available">Μία αναβάθμιση για το Xposed framework είναι διαθέσιμη.</string>
+    <string name="welcome_framework_update_available">Μία αναβάθμιση για το XposedGB framework είναι διαθέσιμη.</string>
     <string name="welcome_update_available">Ένα ή περισσότερα update(s) για τα modules είναι διαθέσιμο/α.</string>
     <string name="tabSettings">Ρυθμίσεις</string>
-    <string name="tabSettingsDescription">Πηγαίνετε σε αυτό το τμήμα για να ρυθμίσετε την Εγκατάσταση του Xposed και του framework.</string>
+    <string name="tabSettingsDescription">Πηγαίνετε σε αυτό το τμήμα για να ρυθμίσετε την Εγκατάσταση του XposedGB και του framework.</string>
     <string name="tabLogs">Αρχεία Καταγραφής</string>
-    <string name="tabLogsDescription">Προβολή και αποθήκευση/αποστολή των αρχείων καταγραφής για το Xposed framework.</string>
+    <string name="tabLogsDescription">Προβολή και αποθήκευση/αποστολή των αρχείων καταγραφής για το XposedGB framework.</string>
     <string name="tabAbout">Σχετικά</string>
-    <string name="tabAboutDescription">Μάθετε για τους ανθρώπους που δημιούργησαν το Xposed, πού θα βρείτε υποστήριξη για αυτήν την εφαρμογή κλπ.</string>
+    <string name="tabAboutDescription">Μάθετε για τους ανθρώπους που δημιούργησαν το XposedGB, πού θα βρείτε υποστήριξη για αυτήν την εφαρμογή κλπ.</string>
 
     <!-- Installer tab -->
     <string name="install">Εγκατάσταση/Αναβάθμιση</string>
@@ -33,15 +33,15 @@
     <string name="soft_reboot">Soft reboot</string>
     <string name="reboot">Reboot</string>
     <string name="areyousure">Είστε σίγουρος;</string>
-    <string name="phone_not_compatible">Το Xposed δεν είναι (ακόμα) συμβατό με την έκδοση %1$d του Android SDK ή την αρχιτεκτονική (%2$s) του επεξεργαστή σας.</string>
-    <string name="not_tested_but_compatible">Το Xposed δεν έχει τεσταριστεί με την έκδοση %d του Android SDK, αλλά φαίνεται να είναι συμβατό. Μπορείτε να δοκιμάσετε να το εγκαταστήσετε αν είστε ριψοκίνδυνος τύπος.</string>
+    <string name="phone_not_compatible">Το XposedGB δεν είναι (ακόμα) συμβατό με την έκδοση %1$d του Android SDK ή την αρχιτεκτονική (%2$s) του επεξεργαστή σας.</string>
+    <string name="not_tested_but_compatible">Το XposedGB δεν έχει τεσταριστεί με την έκδοση %d του Android SDK, αλλά φαίνεται να είναι συμβατό. Μπορείτε να δοκιμάσετε να το εγκαταστήσετε αν είστε ριψοκίνδυνος τύπος.</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">Το Xposed module δεν έχει ενεργοποιηθεί ακόμα</string>
+    <string name="module_is_not_activated_yet">Το XposedGB module δεν έχει ενεργοποιηθεί ακόμα</string>
     <string name="module_empty_description">(δεν υπάρχει περιγραφεί)</string>
     <string name="module_no_ui">Αυτό το module δεν διαθέτει γραφικό περιβάλλον</string>
-    <string name="no_xposed_modules_found">Δεν βρέθηκαν Xposed modules!</string>
-    <string name="xposed_module_list_updated">Η λίστα των Xposed modules ανανεώθηκε\nΟι αλλαγές θα γίνουν ενεργές στο reboot</string>
+    <string name="no_xposed_modules_found">Δεν βρέθηκαν XposedGB modules!</string>
+    <string name="xposed_module_list_updated">Η λίστα των XposedGB modules ανανεώθηκε\nΟι αλλαγές θα γίνουν ενεργές στο reboot</string>
     <string name="warning_xposed_min_version">Αυτό το module απαιτεί μία νεότερη έκδοση του XposedBridge (%d) και γι\' αυτό δεν μπορεί να ενεργοποιηθεί.</string>
     <string name="no_min_version_specified">Αυτό το module δεν καθορίζει την έκδοση του XposedBridge που χρειάζεται.</string>
     <string name="warning_min_version_too_low">Αυτό το module δημιουργήθηκε για την έκδοση %1$d του XposedBridge, αλλά λόγω ασύμβατων αλλαγών στην έκδοση %2$d, έχει απενεργοποιηθεί.</string>
@@ -77,7 +77,7 @@
     <!-- Settings tab -->
     <string name="settings_group_download">Κατέβασμα</string>
     <string name="settings_enable_downloads">Ενεργοποίηση κατεβασμάτων</string>
-    <string name="settings_enable_downloads_summary">Να επιτραπεί στην Εγκατάσταση του Xposed να ελέγχει για αναβαθμίσεις και νέα modules</string>
+    <string name="settings_enable_downloads_summary">Να επιτραπεί στην Εγκατάσταση του XposedGB να ελέγχει για αναβαθμίσεις και νέα modules</string>
     <string name="settings_group_experimental" tools:ignore="UnusedResources">Πειραματικό</string>
     <string name="settings_performance_experiment" tools:ignore="UnusedResources">Πείραμα έπίδοσης</string>
     <string name="settings_performance_experiment_summary" tools:ignore="UnusedResources">Αν ενεργοποιήσετε αυτήν την επιλογή, η επίδοση του συστήματος σας μπορεί είτε να μεγαλώσει, είτε να μικραίνει ή να μείνει ίδια. Δοκιμάστε το ελεύθερα και αναφέρετε τι αποτέλεσμα έχει (ή το ότι δεν έχει αποτέλεσμα). Μπορείτε να επαναεγκαταστήσετε το framework και να επανεκκινήσετε αφού αλλάξετε αυτήν την επιλογή.</string>

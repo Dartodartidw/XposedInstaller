@@ -5,24 +5,24 @@
     <string name="app_name">XposedGB Installer</string>
     <string name="menuSend">Senden</string>
     <string name="menuSaveToSd">Auf SD-Karte speichern</string>
-    <string name="xposed_not_active">Die aktuellste Xposed-Version ist derzeit nicht aktiv. Hast du das Framework installiert und das Gerät neugestartet?</string>
+    <string name="xposed_not_active">Die aktuellste XposedGB-Version ist derzeit nicht aktiv. Hast du das Framework installiert und das Gerät neugestartet?</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">Willkommen beim <b>Xposed Installer</b>!\nWas möchtest du tun?</string>
+    <string name="welcome">Willkommen beim <b>XposedGB Installer</b>!\nWas möchtest du tun?</string>
     <string name="tabInstall">Framework</string>
-    <string name="tabInstallDescription">Hier kannst du das Xposed-Framework verwalten, welches von allen Modulen benötigt wird.</string>
+    <string name="tabInstallDescription">Hier kannst du das XposedGB-Framework verwalten, welches von allen Modulen benötigt wird.</string>
     <string name="tabModules">Module</string>
     <string name="tabModulesDescription">Das Framework selbst bringt keinerlei Funktionalität mit, dafür sind sogenannte Module zuständig. In diesem Bereich kannst du installierte Module aktivieren.</string>
     <string name="tabDownload">Download</string>
     <string name="tabDownloadDescription">Dieser Bereich gibt dir Zugriff auf eine Sammlung von Modulen, aus der du gewünschte Module herunterladen und immer aktuell halten kannst.</string>
-    <string name="welcome_framework_update_available">Es ist eine Aktualisierung für das Xposed-Framework verfügbar (%s).</string>
+    <string name="welcome_framework_update_available">Es ist eine Aktualisierung für das XposedGB-Framework verfügbar (%s).</string>
     <string name="welcome_update_available">Es sind Aktualisierungen für Module verfügbar.</string>
     <string name="tabSettings">Einstellungen</string>
-    <string name="tabSettingsDescription">In diesem Bereich kannst du den Xposed Installer und das Xposed-Framework anpassen.</string>
+    <string name="tabSettingsDescription">In diesem Bereich kannst du den XposedGB Installer und das XposedGB-Framework anpassen.</string>
     <string name="tabLogs">Logs</string>
-    <string name="tabLogsDescription">Logs des Xposed-Frameworks ansehen, speichern und senden.</string>
+    <string name="tabLogsDescription">Logs des XposedGB-Frameworks ansehen, speichern und senden.</string>
     <string name="tabAbout">Über</string>
-    <string name="tabAboutDescription">Erfahre mehr darüber, wer hinter Xposed steckt, wo du Support für diese App erhalten kannst etc.</string>
+    <string name="tabAboutDescription">Erfahre mehr darüber, wer hinter XposedGB steckt, wo du Support für diese App erhalten kannst etc.</string>
 
     <!-- Installer tab -->
     <string name="install">Installieren/Aktualisieren</string>
@@ -33,15 +33,15 @@
     <string name="soft_reboot">Software-Neustart</string>
     <string name="reboot">Geräte-Neustart</string>
     <string name="areyousure">Bist du sicher?</string>
-    <string name="phone_not_compatible">Xposed ist (noch) nicht mit der Android-SDK-Version %1$d oder deiner Prozessor-Architektur (%2$s) kompatibel.</string>
-    <string name="not_tested_but_compatible">Xposed wurde noch nicht mit der Android-SDK-Version %d getestet, aber es scheint kompatibel damit zu sein. Wenn du abenteuerlustig bist, kannst die Installation versuchen.</string>
+    <string name="phone_not_compatible">XposedGB ist (noch) nicht mit der Android-SDK-Version %1$d oder deiner Prozessor-Architektur (%2$s) kompatibel.</string>
+    <string name="not_tested_but_compatible">XposedGB wurde noch nicht mit der Android-SDK-Version %d getestet, aber es scheint kompatibel damit zu sein. Wenn du abenteuerlustig bist, kannst die Installation versuchen.</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">Xposed-Modul ist noch nicht aktiv</string>
+    <string name="module_is_not_activated_yet">XposedGB-Modul ist noch nicht aktiv</string>
     <string name="module_empty_description">(keine Beschreibung vorhanden)</string>
     <string name="module_no_ui">Dieses Modul besitzt keine Benutzeroberfläche</string>
-    <string name="no_xposed_modules_found">Keine Xposed-Module vorhanden!</string>
-    <string name="xposed_module_list_updated">Liste der Xposed-Module aktualisiert\nÄnderungen werden nach einem Neustart sichtbar</string>
+    <string name="no_xposed_modules_found">Keine XposedGB-Module vorhanden!</string>
+    <string name="xposed_module_list_updated">Liste der XposedGB-Module aktualisiert\nÄnderungen werden nach einem Neustart sichtbar</string>
     <string name="warning_xposed_min_version">Dieses Modul erfordert eine neuere XposedBridge-Version (%d) und kann daher nicht aktiviert werden.</string>
     <string name="no_min_version_specified">Dieses Modul macht keine Angabe über die benötigte XposedBridge-Version.</string>
     <string name="warning_min_version_too_low">Dieses Modul wurde für die XposedBridge-Version %1$d erstellt. Aufgrund von inkompatiblen Änderungen in Version %2$d wurde das Modul daher deaktiviert.</string>
@@ -77,7 +77,7 @@
     <!-- Settings tab -->
     <string name="settings_group_download">Download</string>
     <string name="settings_enable_downloads">Downloads aktivieren</string>
-    <string name="settings_enable_downloads_summary">Xposed Installer die Suche nach Aktualisierungen und neuen Modulen erlauben</string>
+    <string name="settings_enable_downloads_summary">XposedGB Installer die Suche nach Aktualisierungen und neuen Modulen erlauben</string>
     <string name="settings_group_experimental">Experimente</string>
     <string name="settings_performance_experiment">Performance-Experiment</string>
     <string name="settings_performance_experiment_summary">Falls du diese Einstellung aktivierst, wird sich die Leistung Ihres System entweder verschlechtern, verbessern oder gar nicht verändern. Teste sie und berichte, welches Verhalten du beobachten kannst. Nachdem du diese Einstellung geändert hast, musst du das Framework neu installieren und das Gerät neustarten.</string>
