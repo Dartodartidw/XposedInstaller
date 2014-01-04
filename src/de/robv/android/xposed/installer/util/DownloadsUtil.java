@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.robv.android.xposed.installer.R;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Query;
 import android.app.DownloadManager.Request;
@@ -14,6 +15,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.Toast;
 
 public class DownloadsUtil {
 	public static final String MIME_TYPE_APK = "application/vnd.android.package-archive";
@@ -34,8 +36,13 @@ public class DownloadsUtil {
 			request.setNotificationVisibility(Request.VISIBILITY_VISIBLE);
 		} else {
 			// on android-2.3, default writes to /cache, which cannot be read
+			File dirpath = context.getExternalFilesDir(null);
+			if (dirpath == null) {
+				Toast.makeText(context, R.string.sdcard_not_writable, Toast.LENGTH_LONG).show();
+				return null;
+			}
 			String filename = Uri.parse(url).getLastPathSegment();
-			File file = new File(context.getExternalFilesDir(null), filename);
+			File file = new File(dirpath, filename);
 			if (file.exists()) {
 				file.delete();
 			}

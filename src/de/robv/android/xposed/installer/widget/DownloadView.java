@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import de.robv.android.xposed.installer.R;
 import de.robv.android.xposed.installer.util.DownloadsUtil;
 import de.robv.android.xposed.installer.util.DownloadsUtil.DownloadFinishedCallback;
@@ -42,11 +41,6 @@ public class DownloadView extends LinearLayout {
 		btnDownload.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (getContext().getExternalFilesDir(null) == null) {
-					Toast.makeText(getContext(), R.string.sdcard_not_writable, Toast.LENGTH_LONG).show();
-					return;
-				}
-
 				mInfo = DownloadsUtil.add(getContext(), mTitle, mUrl, mCallback);
 				refreshViewFromUiThread();
 
