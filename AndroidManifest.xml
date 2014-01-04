@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="de.robv.android.xposed.installer"
-    android:versionCode="1000025"
+    android:versionCode="1000250"
     android:versionName="2.4.1-gb" >
 
     <uses-sdk

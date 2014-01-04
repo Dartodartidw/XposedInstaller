@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">XposedGB Installer</string>
-    <string name="welcome">Добро пожаловать в <b>Xposed Installer</b>!\nВыберите что бы Вы хотели сделать:</string>
+    <string name="welcome">Добро пожаловать в <b>XposedGB Installer</b>!\nВыберите что бы Вы хотели сделать:</string>
     <string name="tabInstall">Фреймворк</string>
-    <string name="tabInstallDescription">Здесь Вы можете настраивать Xposed framework, который необходим для работы модулей.</string>
+    <string name="tabInstallDescription">Здесь Вы можете настраивать XposedGB framework, который необходим для работы модулей.</string>
     <string name="tabModules">Модули</string>
     <string name="tabModulesDescription">"Фреймворк сам по себе не добавляет никакого фунционала. Для этого необходимо установить модули. В этом разделе вы можете активировать модули, после того как Вы их установили</string>
     <string name="tabDownload">Загрузка</string>
     <string name="tabDownloadDescription">Этот раздел дает Вам доступ к репозиторию модулей, в котором Вы можете найти и загрузить нужный модуль, а также проверять обновления.</string>
-    <string name="welcome_framework_update_available">Доступно обновление для Xposed framework.</string>
+    <string name="welcome_framework_update_available">Доступно обновление для XposedGB framework.</string>
     <string name="welcome_update_available">Доступны обновления для модулей.</string>
     <string name="tabSettings">Настройки</string>
-    <string name="tabSettingsDescription">Выберите этот раздел для настройки Xposed Installer и фреймворка.</string>
+    <string name="tabSettingsDescription">Выберите этот раздел для настройки XposedGB Installer и фреймворка.</string>
     <string name="tabAbout">О программе</string>
-    <string name="tabAboutDescription">Узнайте о людях, которые создали Xposed, о том, где можно получить дополнительную информацию и т.д.</string>
+    <string name="tabAboutDescription">Узнайте о людях, которые создали XposedGB, о том, где можно получить дополнительную информацию и т.д.</string>
     <string name="install">Установить/Обновить</string>
     <string name="uninstall">Удалить</string>
     <string name="installedVersion">текущая</string>
@@ -22,13 +22,13 @@
     <string name="soft_reboot">Быстрая перезагрузка</string>
     <string name="reboot">Полная перезагрузка</string>
     <string name="areyousure">Вы уверены?</string>
-    <string name="phone_not_compatible">Xposed (пока) не совместим с версией Android SDK %1$d или архитектурой процессора (%2$s).</string>
-    <string name="not_tested_but_compatible">Xposed не был протестирован с Android SDK версии %d, но может быть совместим. Вы можете попробовать его установить, если хотите приключений.</string>
-    <string name="module_is_not_activated_yet">Xposed модуль еще не активирован</string>
+    <string name="phone_not_compatible">XposedGB (пока) не совместим с версией Android SDK %1$d или архитектурой процессора (%2$s).</string>
+    <string name="not_tested_but_compatible">XposedGB не был протестирован с Android SDK версии %d, но может быть совместим. Вы можете попробовать его установить, если хотите приключений.</string>
+    <string name="module_is_not_activated_yet">XposedGB модуль еще не активирован</string>
     <string name="module_empty_description">(описание отсутствует)</string>
     <string name="module_no_ui">Этот модуль не содержит пользовательского интерфейса</string>
-    <string name="no_xposed_modules_found">Xposed модули не найдены!</string>
-    <string name="xposed_module_list_updated">Cписок модулей Xposed был обновлен\nИзменения станут активными при перезагрузке</string>
+    <string name="no_xposed_modules_found">XposedGB модули не найдены!</string>
+    <string name="xposed_module_list_updated">Cписок модулей XposedGB был обновлен\nИзменения станут активными при перезагрузке</string>
     <string name="warning_xposed_min_version">Этот модуль требует более новой версии XposedBridge (%d) и не может быть активирован.</string>
     <string name="no_min_version_specified">Этот модуль не указал версию XposedBridge, в которой он нуждается.</string>
     <string name="warning_min_version_too_low">Этот модуль был создан для XposedBridge %1$d версии, но из-за несовместимых изменений в %2$d версии он был отключен.</string>
@@ -60,7 +60,7 @@
     <string name="download_section_older">Более 30 дней назад</string>
     <string name="settings_group_download">Загрузка</string>
     <string name="settings_enable_downloads">Разрешить загрузку</string>
-    <string name="settings_enable_downloads_summary">Разрешить проверять обновления Xposed Installer и модулей для него</string>
+    <string name="settings_enable_downloads_summary">Разрешить проверять обновления XposedGB Installer и модулей для него</string>
     <string name="settings_group_experimental">Экспериментально</string>
     <string name="settings_performance_experiment">Эксперимент по производительности</string>
     <string name="settings_performance_experiment_summary">Если активировать эту опцию, производительность устройства может увеличиться, уменьшиться или остаться на прежнем уровне. Пробуйте и рассказывайте о достигнутом результате. Для того чтобы изменения вступили в силу - необходимо переустановить фреймворк.</string>
@@ -72,7 +72,7 @@
     <string name="about_version_label">Версия этого приложения:</string>
     <string name="about_source_label">Исходный код:</string>
     <string name="about_support_label">Поддержка и обсуждение:</string>
-    <string name="about_support_warning">Эта ссылка <b>только</b> на Xposed Installer и фреймворк! Если Вам нужна поддержка по какому-либо модулю - <b>НЕ</b> используйте ее, связывайтесь с автором модуля.</string>
+    <string name="about_support_warning">Эта ссылка <b>только</b> на XposedGB Installer и фреймворк! Если Вам нужна поддержка по какому-либо модулю - <b>НЕ</b> используйте ее, связывайтесь с автором модуля.</string>
     <string name="about_libraries_label">Использованные библиотеки:</string>
     <string name="download_view_download">Загрузка</string>
     <string name="download_view_install">Установка</string>

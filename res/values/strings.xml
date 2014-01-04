@@ -5,24 +5,24 @@
     <string name="app_name">XposedGB Installer</string>
     <string name="menuSend">Send</string>
     <string name="menuSaveToSd">Save to SD card</string>
-    <string name="xposed_not_active">The latest version of Xposed is currently not active. Did you install the framework and reboot?</string>
+    <string name="xposed_not_active">The latest version of XposedGB is currently not active. Did you install the framework and reboot?</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">Welcome to the <b>Xposed Installer</b>!\nPlease choose what you want to do:</string>
+    <string name="welcome">Welcome to the <b>XposedGB Installer</b>!\nPlease choose what you want to do:</string>
     <string name="tabInstall">Framework</string>
-    <string name="tabInstallDescription">Here you can manage the Xposed framework, which is required for any modules to work.</string>
+    <string name="tabInstallDescription">Here you can manage the XposedGB framework, which is required for any modules to work.</string>
     <string name="tabModules">Modules</string>
     <string name="tabModulesDescription">The framework itself doesn\'t add any functionality. You need modules for that. In this section you can activate modules after you have installed them.</string>
     <string name="tabDownload">Download</string>
     <string name="tabDownloadDescription">This section gives you access to a repository of modules, so you can search and download the ones you like and keep them up to date.</string>
-    <string name="welcome_framework_update_available">An update for the Xposed framework is available.</string>
+    <string name="welcome_framework_update_available">An update for the XposedGB framework is available.</string>
     <string name="welcome_update_available">One or more update(s) for modules available.</string>
     <string name="tabSettings">Settings</string>
-    <string name="tabSettingsDescription">Go to this section to configure the Xposed Installer and framework.</string>
+    <string name="tabSettingsDescription">Go to this section to configure the XposedGB Installer and framework.</string>
     <string name="tabLogs">Logs</string>
-    <string name="tabLogsDescription">Display and save/send logs of the Xposed framework.</string>
+    <string name="tabLogsDescription">Display and save/send logs of the XposedGB framework.</string>
     <string name="tabAbout">About</string>
-    <string name="tabAboutDescription">Learn about the people who created Xposed, where to get support for this app etc.</string>
+    <string name="tabAboutDescription">Learn about the people who created XposedGB, where to get support for this app etc.</string>
 
     <!-- Installer tab -->
     <string name="install">Install/Update</string>
@@ -33,15 +33,15 @@
     <string name="soft_reboot">Soft reboot</string>
     <string name="reboot">Reboot</string>
     <string name="areyousure">Are you sure?</string>
-    <string name="phone_not_compatible">Xposed is not (yet) compatible with Android SDK version %1$d or your processor architecture (%2$s).</string>
-    <string name="not_tested_but_compatible">Xposed has not been tested with Android SDK version %d, but it seems to be compatible. You can try installing it if you feel adventurous.</string>
+    <string name="phone_not_compatible">XposedGB is not (yet) compatible with Android SDK version %1$d or your processor architecture (%2$s).</string>
+    <string name="not_tested_but_compatible">XposedGB has not been tested with Android SDK version %d, but it seems to be compatible. You can try installing it if you feel adventurous.</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">Xposed module is not activated yet</string>
+    <string name="module_is_not_activated_yet">XposedGB module is not activated yet</string>
     <string name="module_empty_description">(no description provided)</string>
     <string name="module_no_ui">This module does not provide a user interface</string>
-    <string name="no_xposed_modules_found">No Xposed modules were found!</string>
-    <string name="xposed_module_list_updated">Xposed module list was updated\nChanges will become active on reboot</string>
+    <string name="no_xposed_modules_found">No XposedGB modules were found!</string>
+    <string name="xposed_module_list_updated">XposedGB module list was updated\nChanges will become active on reboot</string>
     <string name="warning_xposed_min_version">This module requires a newer XposedBridge version (%d) and thus cannot be activated.</string>
     <string name="no_min_version_specified">This module does not specify the XposedBridge version it needs.</string>
     <string name="warning_min_version_too_low">This module was created for XposedBridge version %1$d, but due to incompatible changes in version %2$d, it has been disabled.</string>
@@ -77,7 +77,7 @@
     <!-- Settings tab -->
     <string name="settings_group_download">Download</string>
     <string name="settings_enable_downloads">Enable downloads</string>
-    <string name="settings_enable_downloads_summary">Allow Xposed Installer to check for updates and new modules</string>
+    <string name="settings_enable_downloads_summary">Allow XposedGB Installer to check for updates and new modules</string>
     <string name="settings_group_experimental" tools:ignore="UnusedResources">Experimental</string>
     <string name="settings_performance_experiment" tools:ignore="UnusedResources">Performance experiment</string>
     <string name="settings_performance_experiment_summary" tools:ignore="UnusedResources">If you enable this, your system performance might either increase, decrease or stay the same. Feel free to try it and report back which effect you see (or if there is none at all). You need to reinstall the framework and reboot after changing this.</string>

@@ -5,19 +5,19 @@
     <string name="app_name">XposedGB 安裝器</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">歡迎使用<b>Xposed安裝器</b>!\n請選擇您想進行的操作：</string>
+    <string name="welcome">歡迎使用<b>XposedGB安裝器</b>!\n請選擇您想進行的操作：</string>
     <string name="tabInstall">框架</string>
-    <string name="tabInstallDescription">此處您能管理Xposed框架，任何模組想正常運行都需要它。</string>
+    <string name="tabInstallDescription">此處您能管理XposedGB框架，任何模組想正常運行都需要它。</string>
     <string name="tabModules">模組</string>
     <string name="tabModulesDescription">框架本身不增加任何功能。您需要使用模組。安裝模組後在此處啟動它們。</string>
     <string name="tabDownload">下載</string>
     <string name="tabDownloadDescription">此處您能訪問模組倉庫，您可以搜索並下載您喜歡的模組，並及時更新它們。</string>
-    <string name="welcome_framework_update_available">Xposed框架有更新可用。</string>
+    <string name="welcome_framework_update_available">XposedGB框架有更新可用。</string>
     <string name="welcome_update_available">一個或多個模組有更新可用。</string>
     <string name="tabSettings">設置</string>
-    <string name="tabSettingsDescription">此處可配置Xposed安裝器和框架。</string>
+    <string name="tabSettingsDescription">此處可配置XposedGB安裝器和框架。</string>
     <string name="tabAbout">關於</string>
-    <string name="tabAboutDescription">瞭解Xposed作者，如何獲取幫助支持等。</string>
+    <string name="tabAboutDescription">瞭解XposedGB作者，如何獲取幫助支持等。</string>
 
     <!-- Installer tab -->
     <string name="install">安裝/更新</string>
@@ -28,17 +28,17 @@
     <string name="soft_reboot">軟重啟</string>
     <string name="reboot">重啟</string>
     <string name="areyousure">您確定？</string>
-    <string name="phone_not_compatible">Xposed目前不相容 Android SDK 版本 %1$d 或者您的處理器架構(%2$s)。</string>
-    <string name="not_tested_but_compatible">Xposed未在 Android SDK 版本 %d 上測試，但它似乎是可相容的。如果您熱愛冒險，您可以試試安裝它。</string>
+    <string name="phone_not_compatible">XposedGB目前不相容 Android SDK 版本 %1$d 或者您的處理器架構(%2$s)。</string>
+    <string name="not_tested_but_compatible">XposedGB未在 Android SDK 版本 %d 上測試，但它似乎是可相容的。如果您熱愛冒險，您可以試試安裝它。</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">Xposed模組未啟動</string>
+    <string name="module_is_not_activated_yet">XposedGB模組未啟動</string>
     <string name="module_empty_description">(未提供描述)</string>
     <string name="module_no_ui">該模組未提供使用者介面</string>
-    <string name="no_xposed_modules_found">未找到Xposed模組！</string>
-    <string name="xposed_module_list_updated">Xposed模組清單已更新\n重啟後更改將生效</string>
+    <string name="no_xposed_modules_found">未找到XposedGB模組！</string>
+    <string name="xposed_module_list_updated">XposedGB模組清單已更新\n重啟後更改將生效</string>
     <string name="warning_xposed_min_version">該模組需要較新版本的XposedBridge(%d)，因此無法啟動。</string>
-    <string name="no_min_version_specified">該模組未指定需要的Xposed版本。</string>
+    <string name="no_min_version_specified">該模組未指定需要的XposedGB版本。</string>
     <string name="warning_min_version_too_low">該模組在XposedBridge版本%1$d下創建，但因為不相容版本%2$d中的變化內容，它已被禁用。</string>
 
     <!-- Download tab -->
@@ -67,7 +67,7 @@
     <!-- Settings tab -->
     <string name="settings_group_download">下載</string>
     <string name="settings_enable_downloads">啟用下載</string>
-    <string name="settings_enable_downloads_summary">允許Xposed安裝器檢查更新和新模組</string>
+    <string name="settings_enable_downloads_summary">允許XposedGB安裝器檢查更新和新模組</string>
     <string name="settings_group_experimental">實驗性</string>
     <string name="settings_performance_experiment">性能試驗</string>
     <string name="settings_performance_experiment_summary">如果您啟用該選項，您的系統性能可能更好、更差或沒有變化。請隨意試用並回報您觀察到的效果(或者根本沒變化)。修改選項後您需要重新安裝框架並重啟。</string>

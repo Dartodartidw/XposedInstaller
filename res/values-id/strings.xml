@@ -5,9 +5,9 @@
     <string name="app_name">Installer XposedGB</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">Selamat datang di <b>Installer Xposed</b>!\nPilih pilihan Anda:</string>
+    <string name="welcome">Selamat datang di <b>Installer XposedGB</b>!\nPilih pilihan Anda:</string>
     <string name="tabInstall">Framework</string>
-    <string name="tabInstallDescription">Anda dapat mengatur framework Xposed, yang harus diinstall agar Xposed bekerja.</string>
+    <string name="tabInstallDescription">Anda dapat mengatur framework XposedGB, yang harus diinstall agar XposedGB bekerja.</string>
     <string name="tabModules">Modul</string>
     <string name="tabModulesDescription">Framework sendiri tidak menambah fungsi apapun. Anda butuh modul. Anda dapat mengaktifkan modul di sini setelah Anda menginstallnya.</string>
     <string name="tabDownload">Unduh</string>
@@ -15,9 +15,9 @@
     <string name="welcome_framework_update_available">Update tersedia.</string>
     <string name="welcome_update_available">Update tersedia untuk modul.</string>
     <string name="tabSettings">Pengaturan</string>
-    <string name="tabSettingsDescription">Tempat ini mengatur Xposed dan framework.</string>
+    <string name="tabSettingsDescription">Tempat ini mengatur XposedGB dan framework.</string>
     <string name="tabAbout">Tentang</string>
-    <string name="tabAboutDescription">Ketahui siapa yang membuat Xposed, dan di mana Anda bisa mendapat bantuan, dll.</string>
+    <string name="tabAboutDescription">Ketahui siapa yang membuat XposedGB, dan di mana Anda bisa mendapat bantuan, dll.</string>
 
     <!-- Installer tab -->
     <string name="install">Install/Update</string>
@@ -28,14 +28,14 @@
     <string name="soft_reboot">Reboot cepat</string>
     <string name="reboot">Reboot</string>
     <string name="areyousure">Anda yakin?</string>
-    <string name="phone_not_compatible">Xposed masih belum tersedia untuk versi Android SDK %1$d atau arsitektur CPU Anda (%2$s).</string>
-    <string name="not_tested_but_compatible">Xposed belum dicoba di versi Android SDK %d, tetapi mungkin bekerja. Anda dapat mencobanya jika Anda berani.</string>
+    <string name="phone_not_compatible">XposedGB masih belum tersedia untuk versi Android SDK %1$d atau arsitektur CPU Anda (%2$s).</string>
+    <string name="not_tested_but_compatible">XposedGB belum dicoba di versi Android SDK %d, tetapi mungkin bekerja. Anda dapat mencobanya jika Anda berani.</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">Modul Xposed belum diaktifkan</string>
+    <string name="module_is_not_activated_yet">Modul XposedGB belum diaktifkan</string>
     <string name="module_empty_description">(tidak ada deskripsi)</string>
     <string name="module_no_ui">Modul ini tidak ada tampilan utama</string>
-    <string name="no_xposed_modules_found">Tidak ada modul Xposed detemukan!</string>
+    <string name="no_xposed_modules_found">Tidak ada modul XposedGB detemukan!</string>
     <string name="xposed_module_list_updated">Daftar modul telah diupdate\nAkan aktif setelah reboot.</string>
     <string name="warning_xposed_min_version">Modul ini membutuhkan XposedBridge yang lebih baru (%d) dan tidak dapat diaktifkan.</string>
     <string name="no_min_version_specified">Modul ini tidak memberitahukan versi XposedBridge yang dibutuhkan.</string>
@@ -72,10 +72,10 @@
     <!-- Settings tab -->
     <string name="settings_group_download">Unduh</string>
     <string name="settings_enable_downloads">Aktifkan unduhan</string>
-    <string name="settings_enable_downloads_summary">Perbolehkan Xposed untuk mengecek update dan unduhan</string>
+    <string name="settings_enable_downloads_summary">Perbolehkan XposedGB untuk mengecek update dan unduhan</string>
     <string name="settings_group_experimental">Uji coba</string>
     <string name="settings_performance_experiment">Uji coba performa</string>
-    <string name="settings_performance_experiment_summary">Jika diaktifkan, performa sistem akan naik, turun, atau tetap. Cobalah dan laporkan mana yang cocok (atau tiada). Anda perlu menginstall ulang Xposed dan reboot setelah ini.</string>
+    <string name="settings_performance_experiment_summary">Jika diaktifkan, performa sistem akan naik, turun, atau tetap. Cobalah dan laporkan mana yang cocok (atau tiada). Anda perlu menginstall ulang XposedGB dan reboot setelah ini.</string>
 
     <!-- About tab -->
     <string name="about_developers_label">Pengembang utama:</string>
