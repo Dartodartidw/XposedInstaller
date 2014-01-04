@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.widget.Toast;
 import de.robv.android.xposed.installer.R;
 import de.robv.android.xposed.installer.XposedApp;
@@ -176,7 +177,13 @@ public class RepoLoader {
 	}
 
 	public String[] getRepositories() {
-		return mPref.getString("repositories", "http://dl.xposed.info/repo.xml.gz").split("\\|");
+		String repository;
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+			repository = "http://dl.xposed.info/repo.xml.gz";
+		} else {
+			repository = "http://piebridge.me/repo.gb.xml.gz";
+		}
+		return mPref.getString("repositories", repository).split("\\|");
 	}
 	
 	public void setRepositories(String... repos) {
