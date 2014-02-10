@@ -6,7 +6,7 @@
     <string name="none">---</string>
     <string name="about_source">https://github.com/liudongmiao/XposedInstaller</string>
     <string name="about_support">http://forum.xda-developers.com/showthread.php?p=44034334</string>
-    <string name="about_libraries"><a href="https://github.com/emilsjolander/StickyListHeaders">StickyListHeaders</a></string>
+    <string name="about_libraries"><a href="https://github.com/emilsjolander/StickyListHeaders">StickyListHeaders</a>\n<a href="https://github.com/Chainfire/libsuperuser">libsuperuser</a></string>
     <string name="about_developers_gb"><a href="http://forum.xda-developers.com/member.php?u=4419114">rovo89</a>, <a href="http://forum.xda-developers.com/member.php?u=4322181">Tungstwenty</a>, <a href="http://forum.xda-developers.com/member.php?u=3818339">liudongmiao</a>(GB)</string>
 
 </resources>

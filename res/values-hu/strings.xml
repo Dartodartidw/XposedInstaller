@@ -2,23 +2,23 @@
 <resources>
 
     <!-- General/various strings -->
-    <string name="app_name">XposedGB Telepítő</string>
+    <string name="app_name">Xposed Telepítő</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">Üdvözöl az <b>XposedGB Telepítő</b>!\nKérlek válaszd ki mit szeretnél tenni:</string>
+    <string name="welcome">Üdvözöl az <b>Xposed Telepítő</b>!\nKérlek válaszd ki mit szeretnél tenni:</string>
     <string name="tabInstall">Keretrendszer</string>
-    <string name="tabInstallDescription">Itt kezelheted az XposedGB keretrendszert, ami szükséges minden modul működéséhez.</string>
+    <string name="tabInstallDescription">Itt kezelheted az Xposed keretrendszert, ami szükséges minden modul működéséhez.</string>
     <string name="tabModules">Modulok</string>
     <string name="tabModulesDescription">A keretrendszer önmagában semmilyen funkciót nem biztosít. Ahhoz modulok kellenek. Ebben a szekcióban aktiválhatod a modulokat miután telepítetted őket.</string>
     <string name="tabDownload">Letöltések</string>
     <string name="tabDownloadDescription">Ez a szekció hozzáférést biztosít egy modulgyűjteményhez, ahol keresheted és letöltheted amelyeket szeretnéd és frissen is tarthatod őket.</string>
 
-    <string name="welcome_framework_update_available">Frissítés elérhető az XposedGB keretrendszerhez.</string>
+    <string name="welcome_framework_update_available">Frissítés elérhető az Xposed keretrendszerhez.</string>
     <string name="welcome_update_available">Egy vagy több frissítés elérhető.</string>
     <string name="tabSettings">Beállítások</string>
-    <string name="tabSettingsDescription">Látogasd meg ezt a szekciót, hogy beállítsd az XposedGB Telepítőt és a keretrendszert.</string>
+    <string name="tabSettingsDescription">Látogasd meg ezt a szekciót, hogy beállítsd az Xposed Telepítőt és a keretrendszert.</string>
     <string name="tabAbout">Rólunk</string>
-    <string name="tabAboutDescription">Tudj meg többet az XposedGB készítőiről, hol találsz támogatást az alkalmazáshoz, stb.</string>
+    <string name="tabAboutDescription">Tudj meg többet az Xposed készítőiről, hol találsz támogatást az alkalmazáshoz, stb.</string>
 
     <!-- Installer tab -->
     <string name="install">Telepítés/Frissítés</string>
@@ -29,15 +29,15 @@
     <string name="soft_reboot">Gyors újraindítás</string>
     <string name="reboot">Újraindítás</string>
     <string name="areyousure">Biztos vagy benne?</string>
-    <string name="phone_not_compatible">Az XposedGB (még) nem kompatibilis a %1$d verziójú Android SDK-val vagy a processzor architektúráddal (%2$s).</string>
-    <string name="not_tested_but_compatible">Az XposedGB nem volt tesztelve a %d verziójú Android SDK-val, de úgy tűnik, kompatibilis. Megpróbálhatod telepíteni ha elég kalandvágyó vagy.</string>
+    <string name="phone_not_compatible">Az Xposed (még) nem kompatibilis a %1$d verziójú Android SDK-val vagy a processzor architektúráddal (%2$s).</string>
+    <string name="not_tested_but_compatible">Az Xposed nem volt tesztelve a %d verziójú Android SDK-val, de úgy tűnik, kompatibilis. Megpróbálhatod telepíteni ha elég kalandvágyó vagy.</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">Az XposedGB modul még nincs aktiválva</string>
+    <string name="module_is_not_activated_yet">Az Xposed modul még nincs aktiválva</string>
     <string name="module_empty_description">(nincs leírás)</string>
     <string name="module_no_ui">A modulnak nincs felhasználói felülete</string>
-    <string name="no_xposed_modules_found">Nem található XposedGB modul!</string>
-    <string name="xposed_module_list_updated">Az XposedGB modul lista frissült\nA változtatások újraindítás után lépnek életbe</string>
+    <string name="no_xposed_modules_found">Nem található Xposed modul!</string>
+    <string name="xposed_module_list_updated">Az Xposed modul lista frissült\nA változtatások újraindítás után lépnek életbe</string>
     <string name="warning_xposed_min_version">A modulhoz frissebb XposedBridge verzió (%d) szükséges, ezért nem aktiválható.</string>
     <string name="no_min_version_specified">A modul nem tünteti fel a szükséges XposedBridge verziót.</string>
     <string name="warning_min_version_too_low">Ez a modul a(z) %1$d verziójú XposedBridge-hoz lett készítve, de a(z) %2$d verzió összeférhetetlen változtatásai miatt le lett tiltva.</string>

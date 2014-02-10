@@ -2,22 +2,22 @@
 <resources>
 
     <!-- General/various strings -->
-    <string name="app_name">התקנת XposedGB</string>
+    <string name="app_name">התקנת Xposed</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">ברוכים הבאים ל <b>התקנת XposedGB</b>!\nאנא בחרו מה ברצונכם לעשות:</string>
+    <string name="welcome">ברוכים הבאים ל <b>התקנת Xposed</b>!\nאנא בחרו מה ברצונכם לעשות:</string>
     <string name="tabInstall">סביבה</string>
-    <string name="tabInstallDescription">פה אתה יכול לנהל את סביבת XposedGB, שדרושה לכל המודולים.</string>
+    <string name="tabInstallDescription">פה אתה יכול לנהל את סביבת Xposed, שדרושה לכל המודולים.</string>
     <string name="tabModules">מודולים</string>
     <string name="tabModulesDescription">הסביבה עצמה אינה מוסיפה שום פונקציה. יש צורך במודולים בשביל זה. בחלק זה תוכל להפעיל מודולים שהתקנת.</string>
     <string name="tabDownload">הורדה</string>
     <string name="tabDownloadDescription">חלק זה נותן לך גישה למאגר של מודולים, כדי שתוכל לחפש ולהתקין אותם, ולשמור עליהם מעודכנים.</string>
-    <string name="welcome_framework_update_available">עדכון לסביבת XposedGB זמין.</string>
+    <string name="welcome_framework_update_available">עדכון לסביבת Xposed זמין.</string>
     <string name="welcome_update_available">קיים עדכון למודול אחד או יותר.</string>
     <string name="tabSettings">הגדרות</string>
-    <string name="tabSettingsDescription">עבור לחלק זה כדי להגיד את סביבת XposedGB ואת אפליקציה זו.</string>
+    <string name="tabSettingsDescription">עבור לחלק זה כדי להגיד את סביבת Xposed ואת אפליקציה זו.</string>
     <string name="tabAbout">אודות</string>
-    <string name="tabAboutDescription">למד על האנשים אשר יצרו את XposedGB, איפה לקבל תמיכה על אפליקציה זו ועוד.</string>
+    <string name="tabAboutDescription">למד על האנשים אשר יצרו את Xposed, איפה לקבל תמיכה על אפליקציה זו ועוד.</string>
 
     <!-- Installer tab -->
     <string name="install">התקנה/עדכון</string>
@@ -28,8 +28,8 @@
     <string name="soft_reboot">הפעלה מחדש מהירה</string>
     <string name="reboot">הפעלה מחדש</string>
     <string name="areyousure">האם אתה בטוח?</string>
-    <string name="phone_not_compatible">XposedGB לא תומכת (עדיין) באנדרואיד SDK גרסה %1$d או ארכיטקטורת המעבד שלך (%2$s).</string>
-    <string name="not_tested_but_compatible">XposedGB לא נוסה עם אנדרואיד SDK גרסה %d, אבל נראה שהיא נתמכת. ניתן להתקין אם אתה מרגיש הרפתקן.</string>
+    <string name="phone_not_compatible">Xposed לא תומכת (עדיין) באנדרואיד SDK גרסה %1$d או ארכיטקטורת המעבד שלך (%2$s).</string>
+    <string name="not_tested_but_compatible">Xposed לא נוסה עם אנדרואיד SDK גרסה %d, אבל נראה שהיא נתמכת. ניתן להתקין אם אתה מרגיש הרפתקן.</string>
 
     <!-- Modules tab -->
     <string name="module_is_not_activated_yet">מודול עוד לא מופעל</string>

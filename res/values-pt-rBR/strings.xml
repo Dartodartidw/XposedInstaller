@@ -2,27 +2,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- General/various strings -->
-    <string name="app_name">Instalador do XposedGB</string>
+    <string name="app_name">Instalador do Xposed</string>
     <string name="menuSend">Enviar</string>
     <string name="menuSaveToSd">Salvar para o cartão SD</string>
-    <string name="xposed_not_active">A versão mais recente do XposedGB ainda não foi ativada. Você instalou o framework e reiniciou o dispositivo?</string>
+    <string name="xposed_not_active">A versão mais recente do Xposed ainda não foi ativada. Você instalou o framework e reiniciou o dispositivo?</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">Bem-vindo ao <b>Instalador do XposedGB</b>!\nPor favor decida o que iremos fazer:</string>
+    <string name="welcome">Bem-vindo ao <b>Instalador do Xposed</b>!\nPor favor decida o que iremos fazer:</string>
     <string name="tabInstall">Framework</string>
-    <string name="tabInstallDescription">Aqui você gerencia o XposedGB framework, o qual é exigido para que qualquer módulo funcione.</string>
+    <string name="tabInstallDescription">Aqui você gerencia o Xposed framework, o qual é exigido para que qualquer módulo funcione.</string>
     <string name="tabModules">Módulos</string>
     <string name="tabModulesDescription">O framework sozinho não tem nenhuma funcionalidade. Você precisa de módulos para isso. Nesta guia você pode ativar os módulos que você instalou.</string>
     <string name="tabDownload">Baixar</string>
     <string name="tabDownloadDescription">Esta guia te dá acesso ao repositório de módulos, onde você pode pesquisar e baixar os módulos que você gostar e mantê-los atualizados.</string>
-    <string name="welcome_framework_update_available">Uma atualização do XposedGB framework está disponível.</string>
+    <string name="welcome_framework_update_available">Uma atualização do Xposed framework está disponível.</string>
     <string name="welcome_update_available">Uma ou mais atualizações de módulos disponível.</string>
     <string name="tabSettings">Configurações</string>
-    <string name="tabSettingsDescription">Nesta guia você configura o Instalador do XposedGB e o framework.</string>
+    <string name="tabSettingsDescription">Nesta guia você configura o Instalador do Xposed e o framework.</string>
     <string name="tabLogs">Registros</string>
-    <string name="tabLogsDescription">Exibir e também salvar/enviar logs do XposedGB framework.</string>
+    <string name="tabLogsDescription">Exibir e também salvar/enviar logs do Xposed framework.</string>
     <string name="tabAbout">Sobre</string>
-    <string name="tabAboutDescription">Saber mais sobre as pessoas que criaram o XposedGB, onde obter suporte, etc.</string>
+    <string name="tabAboutDescription">Saber mais sobre as pessoas que criaram o Xposed, onde obter suporte, etc.</string>
 
     <!-- Installer tab -->
     <string name="install">Instalar/Atualizar</string>
@@ -33,15 +33,15 @@
     <string name="soft_reboot">Reinício suave</string>
     <string name="reboot">Reiniciar</string>
     <string name="areyousure">Tem certeza?</string>
-    <string name="phone_not_compatible">O XposedGB não é compatível (ainda) com o Android SDK versão %1$d ou a arquitetura do seu processador (%2$s).</string>
-    <string name="not_tested_but_compatible">O XposedGB não foi testado com o Android SDK versão %d, mas parece ser compatível. Você pode tentar instalá-lo se estiver se sentido aventureiro.</string>
+    <string name="phone_not_compatible">O Xposed não é compatível (ainda) com o Android SDK versão %1$d ou a arquitetura do seu processador (%2$s).</string>
+    <string name="not_tested_but_compatible">O Xposed não foi testado com o Android SDK versão %d, mas parece ser compatível. Você pode tentar instalá-lo se estiver se sentido aventureiro.</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">O módulo do XposedGB ainda não foi ativado</string>
+    <string name="module_is_not_activated_yet">O módulo do Xposed ainda não foi ativado</string>
     <string name="module_empty_description">(nenhuma descrição fornecida)</string>
     <string name="module_no_ui">Este módulo não possui uma interface de usuário</string>
     <string name="no_xposed_modules_found">Nenhum módulo encontrado!</string>
-    <string name="xposed_module_list_updated">A lista de módulos do XposedGB foi atualizada\nAs mudanças serão efetivadas ao reiniciar</string>
+    <string name="xposed_module_list_updated">A lista de módulos do Xposed foi atualizada\nAs mudanças serão efetivadas ao reiniciar</string>
     <string name="warning_xposed_min_version">Este módulo requer uma versão do XposedBridge mais recente (%d) e não pode ser ativado.</string>
     <string name="no_min_version_specified">Este módulo não especifica a versão do XposedBridge que ele precisa.</string>
     <string name="warning_min_version_too_low">Este módulo foi criado para a XposedBridge versão %1$d, mas devido a incompatibilidade na versão %2$d, foi desabilitado.</string>
@@ -77,7 +77,7 @@
     <!-- Settings tab -->
     <string name="settings_group_download">Baixar</string>
     <string name="settings_enable_downloads">Ativar downloads</string>
-    <string name="settings_enable_downloads_summary">Permitir ao Instalador ao XposedGB verificar atualizações para módulos e o framework</string>
+    <string name="settings_enable_downloads_summary">Permitir ao Instalador ao Xposed verificar atualizações para módulos e o framework</string>
     <string name="settings_group_experimental">Experimental</string>
     <string name="settings_performance_experiment">Experiência de performance</string>
     <string name="settings_performance_experiment_summary">Ao ativar isso, a performance do seu sistema pode melhorar, piorar ou ficar na mesma. Sinta-se livre para experimentar e me reportar os efeitos (ou ausência deles). Você precisa reinstalar o framework e reiniciar após ativar esta opção.</string>

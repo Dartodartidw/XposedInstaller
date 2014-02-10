@@ -2,27 +2,27 @@
 <resources>
 
     <!-- General/various strings -->
-    <string name="app_name">XposedGB instalátor</string>
+    <string name="app_name">Xposed instalátor</string>
     <string name="menuSend">Odeslat</string>
     <string name="menuSaveToSd">Uložit na SD kartu</string>
-    <string name="xposed_not_active">Poslední verze XposedGB frameworku není aktivní. Byl framework nainstalován a zařízení zrestartováno?</string>
+    <string name="xposed_not_active">Poslední verze Xposed frameworku není aktivní. Byl framework nainstalován a zařízení zrestartováno?</string>
 
     <!-- Welcome screen / main sections -->
-    <string name="welcome">Vítejte v <b>XposedGB Instalátoru</b>!\nZde je možné vybrat co dělat dále:</string>
+    <string name="welcome">Vítejte v <b>Xposed Instalátoru</b>!\nZde je možné vybrat co dělat dále:</string>
     <string name="tabInstall">Framework</string>
-    <string name="tabInstallDescription">Zde je možné spravovat XposedGB framework, který je vyžadován pro funkci modulů.</string>
+    <string name="tabInstallDescription">Zde je možné spravovat Xposed framework, který je vyžadován pro funkci modulů.</string>
     <string name="tabModules">Moduly</string>
     <string name="tabModulesDescription">Samotný framework nepřináší žádnou novou funkcionalitu. K tomu jsou třeba moduly. V této sekci je možné aktivovat moduly po jejich instalaci.</string>
     <string name="tabDownload">Stáhnout</string>
     <string name="tabDownloadDescription">Tato sekce dává přístup k repozitáři modulů, kde je možné vyhledat a stáhnout požadované moduly, a také udržovat jejich aktuální verze.</string>
-    <string name="welcome_framework_update_available">Aktualizace XposedGB frameworku je k dispozici.</string>
+    <string name="welcome_framework_update_available">Aktualizace Xposed frameworku je k dispozici.</string>
     <string name="welcome_update_available">Pro jeden nebo více modulů je k dispozici aktualizace.</string>
     <string name="tabSettings">Nastavení</string>
-    <string name="tabSettingsDescription">V této sekci je možné konfigurovat XposedGB Instalátor a framework.</string>
+    <string name="tabSettingsDescription">V této sekci je možné konfigurovat Xposed Instalátor a framework.</string>
     <string name="tabLogs">Log</string>
-    <string name="tabLogsDescription">Zobrazit a uložit/odeslat log XposedGB frameworku.</string>
+    <string name="tabLogsDescription">Zobrazit a uložit/odeslat log Xposed frameworku.</string>
     <string name="tabAbout">O aplikaci</string>
-    <string name="tabAboutDescription">Dozvědět se něco o lidech, kteří vytvořili XposedGB, jako kde získat podporu atd.</string>
+    <string name="tabAboutDescription">Dozvědět se něco o lidech, kteří vytvořili Xposed, jako kde získat podporu atd.</string>
 
     <!-- Installer tab -->
     <string name="install">Instalovat/Aktualizovat</string>
@@ -33,15 +33,15 @@
     <string name="soft_reboot">Lehký restart</string>
     <string name="reboot">Restart</string>
     <string name="areyousure">Skutečně potvrdit?</string>
-    <string name="phone_not_compatible">XposedGB zatím není kompatibilní s Android SDK verzí %1$d nebo architekturou procesoru (%2$s).</string>
-    <string name="not_tested_but_compatible">XposedGB nebyl testován s Android SDK verzí %d, ale zdá se kompatibilní. Je možné ho instalovat na vlasntí nebezpečí.</string>
+    <string name="phone_not_compatible">Xposed zatím není kompatibilní s Android SDK verzí %1$d nebo architekturou procesoru (%2$s).</string>
+    <string name="not_tested_but_compatible">Xposed nebyl testován s Android SDK verzí %d, ale zdá se kompatibilní. Je možné ho instalovat na vlasntí nebezpečí.</string>
 
     <!-- Modules tab -->
-    <string name="module_is_not_activated_yet">XposedGB modul ještě není aktivován</string>
+    <string name="module_is_not_activated_yet">Xposed modul ještě není aktivován</string>
     <string name="module_empty_description">(žádný popis není k dispozici)</string>
     <string name="module_no_ui">Tento modul neposkytuje žádné uživatelské rozhraní</string>
-    <string name="no_xposed_modules_found">Nenalezeny žádné XposedGB moduly!</string>
-    <string name="xposed_module_list_updated">Seznam XposedGB modulů byl aktualizován.\nZměny se projeví po restartu.</string>
+    <string name="no_xposed_modules_found">Nenalezeny žádné Xposed moduly!</string>
+    <string name="xposed_module_list_updated">Seznam Xposed modulů byl aktualizován.\nZměny se projeví po restartu.</string>
     <string name="warning_xposed_min_version">Tento modul vyžaduje novější verzi XposedBridge (%d), proto nemůže být aktivován.</string>
     <string name="no_min_version_specified">Tento modul nespecifikuje požadovanou verzi XposedBridge.</string>
     <string name="warning_min_version_too_low">Tento modul byl vytvořen pro XposedBridge verzi %1$d, ale kvůli nekompatibilním změnám ve verzi %2$d, byl zakázán.</string>
@@ -77,7 +77,7 @@
     <!-- Settings tab -->
     <string name="settings_group_download">Stahování</string>
     <string name="settings_enable_downloads">Povolit stahování</string>
-    <string name="settings_enable_downloads_summary">Povolit XposedGB Instalátoru kontrolovat aktualizace a nové moduly</string>
+    <string name="settings_enable_downloads_summary">Povolit Xposed Instalátoru kontrolovat aktualizace a nové moduly</string>
     <string name="settings_group_experimental">Experimentální</string>
     <string name="settings_performance_experiment">Experimentální výkon</string>
     <string name="settings_performance_experiment_summary">Zapnutím této volby se systém může zrychlit, ale také zpomalit, nebo zůstat stejný. Tuto vlastnost je vhodné řádně otestovat. Po změně této hodnoty je nutné přeinstalovat framework a restartovat.</string>

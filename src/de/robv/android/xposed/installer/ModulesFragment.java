@@ -6,9 +6,12 @@ import java.util.List;
 
 import android.app.Activity;
 import android.support.v4.app.ListFragment;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
@@ -37,16 +40,27 @@ import de.robv.android.xposed.installer.util.RepoLoader;
 public class ModulesFragment extends ListFragment implements ModuleListener {
 	public static final String SETTINGS_CATEGORY = "de.robv.android.xposed.category.MODULE_SETTINGS";
 	private static final String NOT_ACTIVE_NOTE_TAG = "NOT_ACTIVE_NOTE";
+	private static final String PLAY_STORE_PACKAGE = "com.android.vending";
+	private static final String PLAY_STORE_LINK = "https://play.google.com/store/apps/details?id=%s";
+	private static String PLAY_STORE_LABEL = null;
 	private int installedXposedVersion;
 	private ModuleUtil mModuleUtil;
 	private RepoLoader mRepoLoader;
 	private ModuleAdapter mAdapter = null;
+	private PackageManager mPm = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    mModuleUtil = ModuleUtil.getInstance();
-	    mRepoLoader = RepoLoader.getInstance();
+		super.onCreate(savedInstanceState);
+		mModuleUtil = ModuleUtil.getInstance();
+		mRepoLoader = RepoLoader.getInstance();
+		mPm = getActivity().getPackageManager();
+		if (PLAY_STORE_LABEL == null) {
+			try {
+				ApplicationInfo ai = mPm.getApplicationInfo(PLAY_STORE_PACKAGE, 0);
+				PLAY_STORE_LABEL = mPm.getApplicationLabel(ai).toString();
+			} catch (NameNotFoundException ignored) {}
+		}
 	}
 
 	@Override
@@ -153,6 +167,12 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			menu.removeItem(R.id.menu_uninstall);
 		}
+
+		String installer = mPm.getInstallerPackageName(installedModule.packageName);
+		if (PLAY_STORE_LABEL != null && PLAY_STORE_PACKAGE.equals(installer))
+			menu.findItem(R.id.menu_play_store).setTitle(PLAY_STORE_LABEL);
+		else
+			menu.removeItem(R.id.menu_play_store);
 	}
 
 	@Override
@@ -175,6 +195,18 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 			case R.id.menu_support:
 				Module downloadModule = mRepoLoader.getModule(module.packageName);
 				NavUtil.startURL(getActivity(), downloadModule.support);
+				return true;
+
+			case R.id.menu_play_store:
+				Intent i = new Intent(android.content.Intent.ACTION_VIEW);
+				i.setData(Uri.parse(String.format(PLAY_STORE_LINK, module.packageName)));
+				i.setPackage(PLAY_STORE_PACKAGE);
+				try {
+					startActivity(i);
+				} catch (ActivityNotFoundException e) {
+					i.setPackage(null);
+					startActivity(i);
+				}
 				return true;
 
 			case R.id.menu_app_info:
@@ -241,7 +273,7 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 						boolean changed = mModuleUtil.isModuleEnabled(packageName) ^ isChecked;
 						if (changed) {
 							mModuleUtil.setModuleEnabled(packageName, isChecked);
-							mModuleUtil.updateModulesList();
+							mModuleUtil.updateModulesList(true);
 						}
 					}
 				});
