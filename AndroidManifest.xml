@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="de.robv.android.xposed.installer"
-    android:versionCode="1000250"
-    android:versionName="2.4.1-gb" >
+    android:versionCode="1000280"
+    android:versionName="2.5-gb" >
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:theme="@style/Theme.AppCompat.Light"
+        android:theme="@style/Theme.AppCompat"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"

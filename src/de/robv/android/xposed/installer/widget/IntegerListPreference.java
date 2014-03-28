@@ -2,6 +2,8 @@ package de.robv.android.xposed.installer.widget;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.preference.ListPreference;
 import android.util.AttributeSet;
 
@@ -60,4 +62,14 @@ public class IntegerListPreference extends ListPreference {
 				? Long.parseLong(value.substring(2), 16)
 				: Long.parseLong(value));
 	}
+
+	@Override
+	public CharSequence getSummary() {
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+			return String.format(String.valueOf(super.getSummary()), getEntry());
+		} else {
+			return super.getSummary();
+		}
+	}
+
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- General/various strings -->
     <string name="app_name">Xposed Installer</string>
@@ -40,6 +40,9 @@
     <string name="manual_flash_note">Bitte installiere %s von der SD-Karte, um den Vorgang abzuschließen.</string>
     <string name="reboot_confirmation">Möchtest du jetzt neustarten?</string>
     <string name="reboot_recovery_confirmation">Möchtest du jetzt in den Recovery-Modus booten?</string>
+    <string name="install_warning_title">Vorsicht!</string>
+    <string name="install_warning">In manchen Fällen wird das Gerät nicht mehr korrekt starten, nachdem du Xposed installiert hast.\n\nFalls dir \"Soft Brick\" und \"Bootloop\" nichts sagen oder du nicht weißt, wie du dich aus einer solchen Situation befreien kannst, solltest du Xposed <b>NICHT</b> installieren!\n\nIn jedem Fall ist es sehr empfehlenswert, ein aktuelles Backup zu haben.</string>
+    <string name="dont_show_again">Nicht wieder anzeigen</string>
 
     <!--  File operations -->
     <string name="root_failed">Root-Zugriff fehlgeschlagen\n\nStelle sicher, dass das Gerät korrekt gerootet ist und Shell-Kommandos nicht blockiert werden.</string>
@@ -106,20 +109,27 @@
     <!-- Settings tab -->
     <string name="settings_group_installation">Installation</string>
     <string name="settings_install_mode">Installationsmodus</string>
-    <string name="install_mode_normal">Klassisch (/system direkt ändern)</string>
+    <string name="install_mode_normal">Klassisch (/system direkt beschreiben)</string>
     <string name="install_mode_recovery_auto">Recovery (ZIP automatisch installieren)</string>
     <string name="install_mode_recovery_manual">Recovery (ZIP auf SD-Karte schreiben, selbst installieren)</string>
     <string name="settings_group_download">Download</string>
     <string name="settings_enable_downloads">Downloads aktivieren</string>
     <string name="settings_enable_downloads_summary">Xposed Installer die Suche nach Aktualisierungen und neuen Modulen erlauben</string>
-    <string name="settings_group_experimental">Experimente</string>
+    <string name="settings_group_experimental">Experimentell</string>
+    <string name="settings_disable_resources">Ressourcen-APIs deaktivieren</string>
+    <string name="settings_disable_resources_summary">Workaround für Konflikte mit \"Theming Engines\"\n<b>VORSICHT:</b> Module, die Ressourcen verändern, werden mit dieser Einstellung nicht funktionieren.</string>
     <string name="settings_performance_experiment">Performance-Experiment</string>
-    <string name="settings_performance_experiment_summary">Falls du diese Einstellung aktivierst, wird sich die Leistung Ihres System entweder verschlechtern, verbessern oder gar nicht verändern. Teste sie und berichte, welches Verhalten du beobachten kannst. Nachdem du diese Einstellung geändert hast, musst du das Framework neu installieren und das Gerät neustarten.</string>
+    <string name="settings_performance_experiment_summary">Falls du diese Einstellung aktivierst, wird sich die Leistung deines Systems entweder verschlechtern, verbessern oder gar nicht verändern. Teste sie und berichte, welches Verhalten du beobachten kannst. Nachdem du diese Einstellung geändert hast, musst du das Framework neu installieren und das Gerät neustarten.</string>
 
     <!--  Logs tab  -->
     <string name="logs_load_failed">Log konnte nicht gelesen werden:</string>
     <string name="logs_save_failed">Log konnte nicht auf der SD-Karte gespeichert werden:</string>
     <string name="sdcard_not_writable">SD-Karte wurde nicht gefunden oder ist nicht beschreibbar</string>
+    <string name="log_too_large">Log ist größer als %1$,d kB, die ersten %2$,d kB wurden übersprungen</string>
+    <string name="menuClearLog">Log jetzt leeren</string>
+    <string name="logs_cleared">Log wurde geleert</string>
+    <string name="logs_clear_failed">Konnte Log nicht leeren:</string>
+    <string name="log_is_empty">Log ist leer</string>
 
     <!-- About tab -->
     <string name="about_developers_label">Hauptentwickler:</string>

@@ -58,30 +58,9 @@ public abstract class XposedDropdownNavActivity extends XposedBaseActivity {
 		}
 
 		SimpleAdapter adapter = new SimpleAdapter(this, navigationItemList,
-				android.R.layout.simple_spinner_dropdown_item,
+				R.layout.support_simple_spinner_dropdown_item,
 				new String[] { "title" },
-				new int[] { android.R.id.text1 }) {
-
-			private View removeCheckMark(View view) {
-				if (view != null) {
-					View text = view.findViewById(android.R.id.text1);
-					if (text instanceof CheckedTextView) {
-						((CheckedTextView) text).setCheckMarkDrawable(null);
-					}
-				}
-				return view;
-			}
-
-			@Override
-			public View getView(int position, View convertView, ViewGroup parent) {
-				return removeCheckMark(super.getView(position, convertView, parent));
-			}
-
-			@Override
-			public View getDropDownView(int position, View convertView, ViewGroup parent) {
-				return removeCheckMark(super.getDropDownView(position, convertView, parent));
-			}
-		};
+				new int[] { android.R.id.text1 });
 
 		bar.setListNavigationCallbacks(adapter, new OnNavigationListener() {
 			@Override

@@ -8,6 +8,7 @@ import eu.chainfire.libsuperuser.Shell;
 import eu.chainfire.libsuperuser.Shell.OnCommandResultListener;
 
 public class RootUtil {
+	private static boolean hasBusybox = false;
 	private Shell.Interactive mShell = null;
 	private HandlerThread mCallbackThread = null;
 
@@ -36,7 +37,8 @@ public class RootUtil {
 			}
 		}
 
-		if (mLastExitCode == OnCommandResultListener.WATCHDOG_EXIT)
+		if (mLastExitCode == OnCommandResultListener.WATCHDOG_EXIT
+		   || mLastExitCode == OnCommandResultListener.SHELL_DIED)
 			dispose();
 	}
 
@@ -67,7 +69,7 @@ public class RootUtil {
 
 		waitForCommandFinished();
 
-		if (mLastExitCode != 0) {
+		if (mLastExitCode != OnCommandResultListener.SHELL_RUNNING) {
 			dispose();
 			return false;
 		}
@@ -82,7 +84,9 @@ public class RootUtil {
 		if (mShell == null)
 			return;
 
-		mShell.close();
+		try {
+			mShell.close();
+		} catch (Exception ignored) {}
 		mShell = null;
 
 		mCallbackThread.quit();
@@ -110,6 +114,12 @@ public class RootUtil {
 	 * Executes a single command via the bundled BusyBox executable
 	 */
 	public int executeWithBusybox(String command, List<String> output) {
+		if (!hasBusybox) {
+			hasBusybox = execute("type busybox", null) == 0;
+		}
+		if (hasBusybox) {
+			return execute("busybox " + command, output);
+		}
 		AssetUtil.extractBusybox();
 		return execute(AssetUtil.BUSYBOX_FILE.getAbsolutePath() + " " + command, output);
 	}
