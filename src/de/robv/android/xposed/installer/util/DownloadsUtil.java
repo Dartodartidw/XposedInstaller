@@ -78,7 +78,10 @@ public class DownloadsUtil {
 			return null;
 		}
 		if (columnFilename == -1) {
-			localFilename = getLocalFilename(context, c);
+			localFilename = getLocalFilename(context, c.getString(columnUri));
+			if (localFilename == null) {
+				return null;
+			}
 		}
 
 		return new DownloadInfo(
@@ -121,7 +124,10 @@ public class DownloadsUtil {
 			if (columnFilename != -1) {
 				localFilename = c.getString(columnFilename);
 			} else {
-				localFilename = getLocalFilename(context, c);
+				localFilename = getLocalFilename(context, c.getString(columnUri));
+				if (localFilename == null) {
+					continue;
+				}
 			}
 			if (localFilename != null && !localFilename.isEmpty() && !new File(localFilename).isFile()) {
 				dm.remove(c.getLong(columnId));
@@ -250,23 +256,22 @@ public class DownloadsUtil {
 	}
 
 	/**
-	 * get local filename from <code>{@link android.provider.Downloads.Impl#_DATA}</code>.
+	 * get local filename from url
 	 * @param context
-	 * @param cursor cursor for downloads, which should contain <code>{@link android.app.DownloadManager#COLUMN_LOCAL_URI}</code>
-	 * @return local filename for cursor
+	 * @param url
+	 * @return local filename for url
 	 */
-	private static String getLocalFilename(Context context, Cursor cursor) {
-		int columnLocalUri = cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_URI);
-		Uri localUri = Uri.parse(cursor.getString(columnLocalUri));
-		if (localUri.getScheme().equalsIgnoreCase("file")) {
-			return localUri.getPath();
+	private static String getLocalFilename(Context context, String url) {
+		File dirpath = context.getExternalFilesDir(null);
+		if (dirpath == null) {
+			Toast.makeText(context, R.string.sdcard_not_writable, Toast.LENGTH_LONG).show();
+			return null;
 		}
-		// shouldn't happen
-		Cursor _cursor = context.getContentResolver().query(localUri, new String[] { "_data" }, null, null, null);
-		if (_cursor != null && _cursor.moveToFirst()) {
-			return _cursor.getString(_cursor.getColumnIndex("_data"));
+		if (url == null || url.length() == 0) {
+			return null;
 		}
-		return null;
+		String filename = Uri.parse(url).getLastPathSegment();
+		return new File(dirpath, filename).toString();
 	}
 }
 
