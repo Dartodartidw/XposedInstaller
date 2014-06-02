@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.regex.Matcher;
@@ -19,15 +20,10 @@ import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,24 +32,30 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import de.robv.android.xposed.installer.util.AssetUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil;
+import de.robv.android.xposed.installer.util.NavUtil;
+import de.robv.android.xposed.installer.util.NotificationUtil;
 import de.robv.android.xposed.installer.util.RootUtil;
+import de.robv.android.xposed.installer.util.ThemeUtil;
 
 public class InstallerFragment extends Fragment {
 	private static Pattern PATTERN_APP_PROCESS_VERSION = Pattern.compile(".*with Xposed support \\(version (.+)\\).*");
 	private String APP_PROCESS_NAME = null;
-	private String XPOSEDTEST_NAME = null;
 	private final String BINARIES_FOLDER = AssetUtil.getBinariesFolder();
 	private static final String JAR_PATH = XposedApp.BASE_DIR + "bin/XposedBridge.jar";
 	private static final String JAR_PATH_NEWVERSION = JAR_PATH + ".newversion";
 	private static int JAR_LATEST_VERSION = -1;
 	private final LinkedList<String> mCompatibilityErrors = new LinkedList<String>();
 	private RootUtil mRootUtil = new RootUtil();
+	private boolean mHadSegmentationFault = false;
+
+	private static final String PREF_LAST_SEEN_BINARY = "last_seen_binary";
+	private int appProcessInstalledVersion;
 
 	private ProgressDialog dlgProgress;
 	private TextView txtAppProcessInstalledVersion, txtAppProcessLatestVersion;
 	private TextView txtJarInstalledVersion, txtJarLatestVersion;
-	private TextView txtInstallError, txtInstallMode;
-	private Button btnInstall, btnUninstall, btnSoftReboot, btnReboot;
+	private TextView txtInstallError, txtKnownIssue;
+	private Button btnInstallMode, btnInstall, btnUninstall, btnSoftReboot, btnReboot;
 
 	private static final int INSTALL_MODE_NORMAL = 0;
 	private static final int INSTALL_MODE_RECOVERY_AUTO = 1;
@@ -80,19 +82,20 @@ public class InstallerFragment extends Fragment {
 		txtJarInstalledVersion = (TextView) v.findViewById(R.id.jar_installed_version);
 		txtJarLatestVersion = (TextView) v.findViewById(R.id.jar_latest_version);
 
-		txtInstallMode = (TextView) v.findViewById(R.id.framework_install_mode);
+		btnInstallMode = (Button) v.findViewById(R.id.framework_install_mode);
 		txtInstallError = (TextView) v.findViewById(R.id.framework_install_errors);
+		txtKnownIssue = (TextView) v.findViewById(R.id.framework_known_issue);
 
 		btnInstall = (Button) v.findViewById(R.id.btnInstall);
 		btnUninstall = (Button) v.findViewById(R.id.btnUninstall);
 		btnSoftReboot = (Button) v.findViewById(R.id.btnSoftReboot);
 		btnReboot = (Button) v.findViewById(R.id.btnReboot);
 
-		txtInstallMode.setOnClickListener(new View.OnClickListener() {
+		btnInstallMode.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), XposedInstallerActivity.class);
-				intent.putExtra(XposedInstallerActivity.EXTRA_OPEN_TAB, XposedDropdownNavActivity.TAB_SETTINGS);
+				intent.putExtra(XposedInstallerActivity.EXTRA_SECTION, XposedDropdownNavActivity.TAB_SETTINGS);
 				startActivity(intent);
 			}
 		});
@@ -102,26 +105,21 @@ public class InstallerFragment extends Fragment {
 			// incompatible processor architecture
 		} else if (Build.VERSION.SDK_INT == 10) {
 			APP_PROCESS_NAME = BINARIES_FOLDER + "app_process_xposed_sdk10";
-			XPOSEDTEST_NAME = BINARIES_FOLDER + "xposedtest_sdk10";
 			isCompatible = checkCompatibility();
 
 		} else if (Build.VERSION.SDK_INT == 15) {
 			APP_PROCESS_NAME = BINARIES_FOLDER + "app_process_xposed_sdk15";
-			XPOSEDTEST_NAME = BINARIES_FOLDER + "xposedtest_sdk15";
 			isCompatible = checkCompatibility();
 
 		} else if (Build.VERSION.SDK_INT >= 16 && Build.VERSION.SDK_INT <= 19) {
 			APP_PROCESS_NAME = BINARIES_FOLDER + "app_process_xposed_sdk16";
-			XPOSEDTEST_NAME = BINARIES_FOLDER + "xposedtest_sdk16";
 			isCompatible = checkCompatibility();
 
 		} else if (Build.VERSION.SDK_INT > 19) {
 			APP_PROCESS_NAME = BINARIES_FOLDER + "app_process_xposed_sdk16";
-			XPOSEDTEST_NAME = BINARIES_FOLDER + "xposedtest_sdk16";
 			isCompatible = checkCompatibility();
 			if (isCompatible) {
 				txtInstallError.setText(String.format(getString(R.string.not_tested_but_compatible), Build.VERSION.SDK_INT));
-				txtInstallError.setTextColor(Color.YELLOW);
 				txtInstallError.setVisibility(View.VISIBLE);
 			}
 		}
@@ -139,6 +137,13 @@ public class InstallerFragment extends Fragment {
 							refreshVersions();
 							if (success)
 								ModuleUtil.getInstance().updateModulesList(false);
+
+							// Start tracking the last seen version, irrespective of the installation method and the outcome.
+							// 0 or a stale version might be registered, if a recovery installation was requested
+							// It will get up to date when the last seen version is updated on a later panel startup
+							XposedApp.getPreferences().edit().putInt(PREF_LAST_SEEN_BINARY, appProcessInstalledVersion).commit();
+							// Dismiss any warning already being displayed
+							getView().findViewById(R.id.install_reverted_warning).setVisibility(View.GONE);
 						}
 					});
 				}
@@ -148,7 +153,6 @@ public class InstallerFragment extends Fragment {
 			if (!mCompatibilityErrors.isEmpty())
 				errorText += "\n\n" + TextUtils.join("\n", mCompatibilityErrors);
 			txtInstallError.setText(errorText);
-			txtInstallError.setTextColor(Color.RED);
 			txtInstallError.setVisibility(View.VISIBLE);
 			btnInstall.setEnabled(false);
 		}
@@ -161,6 +165,18 @@ public class InstallerFragment extends Fragment {
 					@Override
 					public void run() {
 						refreshVersions();
+
+						// Update tracking of the last seen version
+						if (appProcessInstalledVersion == 0) {
+							// Uninstall completed, check if an Xposed binary doesn't reappear
+							XposedApp.getPreferences().edit().putInt(PREF_LAST_SEEN_BINARY, -1).commit();
+						} else {
+							// Xposed binary still in place.
+							// Stop tracking last seen version, as uninstall might complete later or not
+							XposedApp.getPreferences().edit().remove(PREF_LAST_SEEN_BINARY).commit();
+						}
+						// Dismiss any warning already being displayed
+						getView().findViewById(R.id.install_reverted_warning).setVisibility(View.GONE);
 					}
 				});
 			}
@@ -210,18 +226,55 @@ public class InstallerFragment extends Fragment {
 			.show();
 		}
 
+		/* Detection of reverts to /system/bin/app_process.
+		 * LastSeenBinary can be:
+		 *   missing - do nothing
+		 *   -1      - Uninstall was performed, check if an Xposed binary didn't reappear
+		 *   >= 0    - Make sure a downgrade or non-xposed binary doesn't occur
+		 *             Also auto-update the value to the latest version found
+		 */
+		int lastSeenBinary = XposedApp.getPreferences().getInt(PREF_LAST_SEEN_BINARY, Integer.MIN_VALUE);
+		if (lastSeenBinary != Integer.MIN_VALUE) {
+			final View vInstallRevertedWarning = v.findViewById(R.id.install_reverted_warning);
+			final TextView txtInstallRevertedWarning = (TextView) v.findViewById(R.id.install_reverted_warning_text);
+			vInstallRevertedWarning.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// Stop tracking and dismiss the info panel
+					XposedApp.getPreferences().edit().remove(PREF_LAST_SEEN_BINARY).commit();
+					vInstallRevertedWarning.setVisibility(View.GONE);
+				}
+			});
+
+			if (lastSeenBinary < 0 && appProcessInstalledVersion > 0) {
+				// Uninstall was previously completed but an Xposed binary has reappeared
+				txtInstallRevertedWarning.setText(getString(R.string.uninstall_reverted,
+						versionToText(appProcessInstalledVersion)));
+				vInstallRevertedWarning.setVisibility(View.VISIBLE);
+			} else  if (appProcessInstalledVersion < lastSeenBinary) {
+				// Previously installed binary was either restored to stock or downgraded, probably
+				// following a reboot on a locked system
+				txtInstallRevertedWarning.setText(getString(R.string.install_reverted,
+						versionToText(lastSeenBinary), versionToText(appProcessInstalledVersion)));
+				vInstallRevertedWarning.setVisibility(View.VISIBLE);
+			} else if (appProcessInstalledVersion > lastSeenBinary) {
+				// Current binary is newer, register it and keep monitoring for future downgrades
+				XposedApp.getPreferences().edit().putInt(PREF_LAST_SEEN_BINARY, appProcessInstalledVersion).commit();
+			} else {
+				// All is ok
+			}
+		}
+
 		return v;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		SpannableStringBuilder installModeText = new SpannableStringBuilder(getString(R.string.settings_install_mode));
-		installModeText.append(":\n");
-		installModeText.setSpan(new StyleSpan(Typeface.BOLD), 0, installModeText.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-		installModeText.append(getInstallModeText());
-		txtInstallMode.setText(installModeText);
+		btnInstallMode.setText(getInstallModeText());
+		NotificationUtil.cancel(NotificationUtil.NOTIFICATION_MODULES_UPDATED);
+		mHadSegmentationFault = false;
+		refreshKnownIssue();
 	}
 
 	@Override
@@ -279,7 +332,7 @@ public class InstallerFragment extends Fragment {
 	}
 
 	private void refreshVersions() {
-		int appProcessInstalledVersion = getInstalledAppProcessVersion();
+		appProcessInstalledVersion = getInstalledAppProcessVersion();
 		int appProcessLatestVersion = getLatestAppProcessVersion();
 		int jarInstalledVersion = getJarInstalledVersion();
 		int jarLatestVersion = getJarLatestVersion();
@@ -290,18 +343,69 @@ public class InstallerFragment extends Fragment {
 		txtJarLatestVersion.setText(versionToText(jarLatestVersion));
 
 		if (appProcessInstalledVersion < appProcessLatestVersion)
-			txtAppProcessInstalledVersion.setTextColor(Color.RED);
+			txtAppProcessInstalledVersion.setTextColor(getResources().getColor(R.color.warning));
 		else
-			txtAppProcessInstalledVersion.setTextColor(Color.GREEN);
+			txtAppProcessInstalledVersion.setTextColor(getResources().getColor(R.color.darker_green));
 
 		if (jarInstalledVersion < jarLatestVersion)
-			txtJarInstalledVersion.setTextColor(Color.RED);
+			txtJarInstalledVersion.setTextColor(getResources().getColor(R.color.warning));
 		else
-			txtJarInstalledVersion.setTextColor(Color.GREEN);
+			txtJarInstalledVersion.setTextColor(getResources().getColor(R.color.darker_green));
 	}
 
 	private String versionToText(int version) {
 		return (version == 0) ? getString(R.string.none) : Integer.toString(version);
+	}
+
+	private void refreshKnownIssue() {
+		String issueName = null;
+		String issueLink = null;
+
+		if (new File("/system/framework/core.jar.jex").exists()) {
+			issueName = "Aliyun OS";
+			issueLink = "http://forum.xda-developers.com/showpost.php?p=52289793&postcount=5";
+
+		} else if (new File("/data/miui/DexspyInstaller.jar").exists() || checkClassExists("miui.dexspy.DexspyInstaller")) {
+			issueName = "MIUI/Dexspy";
+			issueLink = "http://forum.xda-developers.com/showpost.php?p=52291098&postcount=6";
+
+		} else if (mHadSegmentationFault) {
+			issueName = "Segmentation fault";
+			issueLink = "http://forum.xda-developers.com/showpost.php?p=52292102&postcount=7";
+
+		} else if (checkClassExists("com.huawei.android.content.res.ResourcesEx")
+				|| checkClassExists("android.content.res.NubiaResources")) {
+			issueName = "Resources subclass";
+			issueLink = "http://forum.xda-developers.com/showpost.php?p=52801382&postcount=8";
+		}
+
+		if (issueName != null) {
+			final String issueLinkFinal = issueLink;
+			txtKnownIssue.setText(getString(R.string.install_known_issue, issueName));
+			txtKnownIssue.setVisibility(View.VISIBLE);
+			txtKnownIssue.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					NavUtil.startURL(getActivity(), issueLinkFinal);
+				}
+			});
+			if (btnInstall.isEnabled())
+				btnInstall.setTextColor(getResources().getColor(R.color.warning));
+			txtInstallError.setTextColor(ThemeUtil.getThemeColor(getActivity(), android.R.attr.textColorTertiary));
+		} else {
+			txtKnownIssue.setVisibility(View.GONE);
+			btnInstall.setTextColor(ThemeUtil.getThemeColor(getActivity(), android.R.attr.textColorPrimary));
+			txtInstallError.setTextColor(getResources().getColor(R.color.warning));
+		}
+	}
+
+	private static boolean checkClassExists(String className) {
+		try {
+			Class.forName(className);
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 
 	private void showAlert(final String result) {
@@ -322,6 +426,9 @@ public class InstallerFragment extends Fragment {
 		dialog.show();
 		TextView txtMessage = (TextView) dialog.findViewById(android.R.id.message);
 		txtMessage.setTextSize(14);
+
+		mHadSegmentationFault = result.toLowerCase(Locale.US).contains("segmentation fault");
+		refreshKnownIssue();
 	}
 
 	private void areYouSure(int messageTextId, DialogInterface.OnClickListener yesHandler) {
@@ -354,45 +461,14 @@ public class InstallerFragment extends Fragment {
 		dialog.show();
 		TextView txtMessage = (TextView) dialog.findViewById(android.R.id.message);
 		txtMessage.setTextSize(14);
+
+		mHadSegmentationFault = message.toLowerCase(Locale.US).contains("segmentation fault");
+		refreshKnownIssue();
 	}
 
 	private boolean checkCompatibility() {
 		mCompatibilityErrors.clear();
-		return checkXposedTestCompatibility() && checkAppProcessCompatibility();
-	}
-
-	private boolean checkXposedTestCompatibility() {
-		try {
-			if (XPOSEDTEST_NAME == null)
-				return false;
-
-			File testFile = AssetUtil.writeAssetToCacheFile(XPOSEDTEST_NAME, "xposedtest", 00700);
-			if (testFile == null) {
-				mCompatibilityErrors.add("could not write xposedtest to cache");
-				return false;
-			}
-
-			Process p = Runtime.getRuntime().exec(testFile.getAbsolutePath());
-
-			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String result = stdout.readLine();
-			stdout.close();
-
-			BufferedReader stderr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			String errorLine;
-			while ((errorLine = stderr.readLine()) != null) {
-				mCompatibilityErrors.add(errorLine);
-			}
-			stderr.close();
-
-			p.destroy();
-
-			testFile.delete();
-			return result != null && result.equals("OK");
-		} catch (IOException e) {
-			mCompatibilityErrors.add(e.getMessage());
-			return false;
-		}
+		return checkAppProcessCompatibility();
 	}
 
 	private boolean checkAppProcessCompatibility() {
@@ -545,6 +621,9 @@ public class InstallerFragment extends Fragment {
 		List<String> messages = new LinkedList<String>();
 		boolean showAlert = true;
 		try {
+			messages.add(getString(R.string.sdcard_location, XposedApp.getInstance().getExternalFilesDir(null)));
+			messages.add("");
+
 			messages.add(getString(R.string.file_copying, "Xposed-Disabler-Recovery.zip"));
 			if (AssetUtil.writeAssetToSdcardFile("Xposed-Disabler-Recovery.zip", 00644) == null) {
 				messages.add("");
@@ -657,6 +736,9 @@ public class InstallerFragment extends Fragment {
 		List<String> messages = new LinkedList<String>();
 		boolean showAlert = true;
 		try {
+			messages.add(getString(R.string.sdcard_location, XposedApp.getInstance().getExternalFilesDir(null)));
+			messages.add("");
+
 			if (installMode == INSTALL_MODE_NORMAL) {
 				messages.add(getString(R.string.file_mounting_writable, "/system"));
 				if (mRootUtil.executeWithBusybox("mount -o remount,rw /system", messages) != 0) {

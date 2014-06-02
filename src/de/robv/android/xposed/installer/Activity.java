@@ -1,5 +1,7 @@
 package de.robv.android.xposed.installer;
 
+import me.piebridge.util.GingerBreadUtil;
+
 import android.os.Bundle;
 
 public abstract class Activity extends android.support.v7.app.ActionBarActivity {
@@ -59,4 +61,8 @@ public abstract class Activity extends android.support.v7.app.ActionBarActivity 
 		}
 	}
 
+	@Override
+	public void recreate() {
+		GingerBreadUtil.recreate(this);
+	}
 }

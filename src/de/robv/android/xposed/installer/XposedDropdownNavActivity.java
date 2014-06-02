@@ -9,15 +9,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CheckedTextView;
 import android.widget.SimpleAdapter;
 import de.robv.android.xposed.installer.util.NavUtil;
 
@@ -39,8 +34,6 @@ public abstract class XposedDropdownNavActivity extends XposedBaseActivity {
 
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.cancelAll();
 
 		final ActionBar bar = getSupportActionBar();
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -57,7 +50,8 @@ public abstract class XposedDropdownNavActivity extends XposedBaseActivity {
 			navigationItemList.add(makeNavigationItem(getString(R.string.tabAbout), AboutFragment.class));
 		}
 
-		SimpleAdapter adapter = new SimpleAdapter(this, navigationItemList,
+		SimpleAdapter adapter = new SimpleAdapter(getSupportActionBar().getThemedContext(),
+				navigationItemList,
 				R.layout.support_simple_spinner_dropdown_item,
 				new String[] { "title" },
 				new int[] { android.R.id.text1 });
@@ -70,7 +64,7 @@ public abstract class XposedDropdownNavActivity extends XposedBaseActivity {
 
 				if (navigateViaIntent()) {
 					Intent intent = new Intent(XposedDropdownNavActivity.this, XposedInstallerActivity.class);
-					intent.putExtra(XposedInstallerActivity.EXTRA_OPEN_TAB, itemPosition);
+					intent.putExtra(XposedInstallerActivity.EXTRA_SECTION, itemPosition);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 					finish();

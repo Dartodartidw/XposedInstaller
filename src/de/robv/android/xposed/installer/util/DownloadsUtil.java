@@ -150,7 +150,7 @@ public class DownloadsUtil {
 		Collections.sort(downloads);
 		return downloads;
 	}
-	
+
 	public static void removeById(Context context, long id) {
 		DownloadManager dm = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 		dm.remove(id);

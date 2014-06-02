@@ -7,11 +7,13 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.FileUtils;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import de.robv.android.xposed.installer.util.AssetUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil;
+import de.robv.android.xposed.installer.util.NotificationUtil;
 import de.robv.android.xposed.installer.util.RepoLoader;
 
 public class XposedApp extends Application implements Application.ActivityLifecycleCallbacks {
@@ -19,8 +21,6 @@ public class XposedApp extends Application implements Application.ActivityLifecy
 
 	@SuppressLint("SdCardPath")
 	public static final String BASE_DIR = "/data/data/de.robv.android.xposed.installer/";
-
-	public static final int NOTIFICATION_MODULE_NOT_ACTIVATED_YET = 1;
 
 	private static XposedApp mInstance = null;
 	private static Thread mUiThread;
@@ -38,6 +38,8 @@ public class XposedApp extends Application implements Application.ActivityLifecy
 
 		mPref = PreferenceManager.getDefaultSharedPreferences(this);
 		createDirectories();
+		cleanup();
+		NotificationUtil.init();
 		AssetUtil.checkStaticBusyboxAvailability();
 		AssetUtil.removeBusybox();
 
@@ -48,6 +50,24 @@ public class XposedApp extends Application implements Application.ActivityLifecy
 		mkdirAndChmod("bin", 00771);
 		mkdirAndChmod("conf", 00771);
 		mkdirAndChmod("log", 00771);
+	}
+
+	private void cleanup() {
+		if (!mPref.getBoolean("cleaned_up_sdcard", false)) {
+			if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+				File sdcard = Environment.getExternalStorageDirectory();
+				new File(sdcard, "Xposed-Disabler-CWM.zip").delete();
+				new File(sdcard, "Xposed-Disabler-Recovery.zip").delete();
+				new File(sdcard, "Xposed-Installer-Recovery.zip").delete();
+				mPref.edit().putBoolean("cleaned_up_sdcard", true).apply();
+			}
+		}
+
+		if (!mPref.getBoolean("cleaned_up_debug_log", false)) {
+			new File(XposedApp.BASE_DIR + "log/debug.log").delete();
+			new File(XposedApp.BASE_DIR + "log/debug.log.old").delete();
+			mPref.edit().putBoolean("cleaned_up_debug_log", true).apply();
+		}
 	}
 
 	private void mkdirAndChmod(String dir, int permissions) {

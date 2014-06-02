@@ -32,7 +32,7 @@ public class WelcomeActivity extends XposedBaseActivity implements ModuleListene
 		setContentView(R.layout.activity_welcome);
 
 		mAdapter = new WelcomeAdapter(this);
-		// TODO add proper description texts and load them from resources, add icons, make it more fancy, ... 
+		// TODO add proper description texts and load them from resources, add icons, make it more fancy, ...
 		mAdapter.add(new WelcomeItem(R.string.tabInstall, R.string.tabInstallDescription));
 		mAdapter.add(new WelcomeItem(R.string.tabModules, R.string.tabModulesDescription));
 		mAdapter.add(new WelcomeItem(R.string.tabDownload, R.string.tabDownloadDescription));
@@ -46,7 +46,7 @@ public class WelcomeActivity extends XposedBaseActivity implements ModuleListene
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = new Intent(WelcomeActivity.this, XposedInstallerActivity.class);
-				intent.putExtra(XposedInstallerActivity.EXTRA_OPEN_TAB, position);
+				intent.putExtra(XposedInstallerActivity.EXTRA_SECTION, position);
 				intent.putExtra(NavUtil.FINISH_ON_UP_NAVIGATION, true);
 				startActivity(intent);
 				NavUtil.setTransitionSlideEnter(WelcomeActivity.this);

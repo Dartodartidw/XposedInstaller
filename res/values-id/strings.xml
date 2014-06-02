@@ -2,7 +2,6 @@
 <resources>
 
     <!-- General/various strings -->
-    <string name="app_name">Installer Xposed</string>
 
     <!-- Welcome screen / main sections -->
     <string name="welcome">Selamat datang di <b>Installer Xposed</b>!\nPilih pilihan Anda:</string>
@@ -31,6 +30,8 @@
     <string name="phone_not_compatible">Xposed masih belum tersedia untuk versi Android SDK %1$d atau arsitektur CPU Anda (%2$s).</string>
     <string name="not_tested_but_compatible">Xposed belum dicoba di versi Android SDK %d, tetapi mungkin bekerja. Anda dapat mencobanya jika Anda berani.</string>
 
+    <!-- File operations -->
+
     <!-- Modules tab -->
     <string name="module_is_not_activated_yet">Modul Xposed belum diaktifkan</string>
     <string name="module_empty_description">(tidak ada deskripsi)</string>
@@ -50,7 +51,6 @@
     <string name="menuSearch">Cari</string>
     <string name="menuReload">Reload</string>
     <string name="changes">Perubahan:</string>
-    <string name="branch_display">(cabang %s)</string>
     <string name="download_author">oleh %s</string>
     <string name="download_unknown_author">pembuat tdk diketahui</string>
     <string name="download_status_installed">Terinstall (versi %s)</string>
@@ -76,6 +76,8 @@
     <string name="settings_group_experimental">Uji coba</string>
     <string name="settings_performance_experiment">Uji coba performa</string>
     <string name="settings_performance_experiment_summary">Jika diaktifkan, performa sistem akan naik, turun, atau tetap. Cobalah dan laporkan mana yang cocok (atau tiada). Anda perlu menginstall ulang Xposed dan reboot setelah ini.</string>
+
+    <!-- Logs tab  -->
 
     <!-- About tab -->
     <string name="about_developers_label">Pengembang utama:</string>

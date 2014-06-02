@@ -9,6 +9,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import me.piebridge.android.preference.PreferenceFragment;
+import me.piebridge.util.GingerBreadUtil;
 import android.widget.Toast;
 import de.robv.android.xposed.installer.util.RepoLoader;
 
@@ -43,6 +44,14 @@ public class SettingsFragment extends PreferenceFragment {
 			}
 		});
 
+		findPreference("release_type_global").setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				RepoLoader.getInstance().setReleaseTypeGlobal((String) newValue);
+				return true;
+			}
+		});
+
 		CheckBoxPreference prefDisableResources = (CheckBoxPreference) findPreference("disable_resources");
 		prefDisableResources.setChecked(mDisableResourcesFlag.exists());
 		prefDisableResources.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
@@ -59,6 +68,15 @@ public class SettingsFragment extends PreferenceFragment {
 					mDisableResourcesFlag.delete();
 				}
 				return (enabled == mDisableResourcesFlag.exists());
+			}
+		});
+
+		Preference prefTheme = findPreference("theme");
+		prefTheme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				GingerBreadUtil.recreate(getActivity());
+				return true;
 			}
 		});
 	}

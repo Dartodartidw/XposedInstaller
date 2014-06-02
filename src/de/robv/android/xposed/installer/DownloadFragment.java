@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import android.view.animation.Animation;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -41,13 +40,13 @@ import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import de.robv.android.xposed.installer.repo.Module;
 import de.robv.android.xposed.installer.repo.ModuleGroup;
 import de.robv.android.xposed.installer.repo.ModuleVersion;
-import de.robv.android.xposed.installer.util.AnimatorUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil.InstalledModule;
 import de.robv.android.xposed.installer.util.ModuleUtil.ModuleListener;
 import de.robv.android.xposed.installer.util.NavUtil;
 import de.robv.android.xposed.installer.util.RepoLoader;
 import de.robv.android.xposed.installer.util.RepoLoader.RepoListener;
+import de.robv.android.xposed.installer.util.ThemeUtil;
 
 public class DownloadFragment extends Fragment implements RepoListener, ModuleListener {
 	private SharedPreferences mPref;
@@ -90,7 +89,7 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 		mRepoLoader.addListener(this, true);
 		mModuleUtil.addListener(this);
 		lv.setAdapter(mAdapter);
-		
+
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -189,14 +188,9 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 				builder.show();
 				return true;
 		}
-	    return super.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-		return AnimatorUtil.createSlideAnimation(this, nextAnim);
-	}
-	
 	@Override
 	public void onRepoReloaded(final RepoLoader loader) {
 		if (mAdapter == null)
@@ -294,7 +288,7 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 				txtStatus.setVisibility(View.VISIBLE);
 			} else if (installStatus == DownloadItem.INSTALL_STATUS_INSTALLED) {
 				txtStatus.setText(getContext().getString(R.string.download_status_installed, installed.versionName));
-				txtStatus.setTextColor(getResources().getColor(R.color.download_status_installed));
+				txtStatus.setTextColor(ThemeUtil.getThemeColor(getContext(), R.attr.download_status_installed));
 				txtStatus.setVisibility(View.VISIBLE);
 			} else {
 				txtStatus.setVisibility(View.GONE);
@@ -312,7 +306,7 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 		public void notifyDataSetChanged() {
 			setNotifyOnChange(false);
 			mAdapter.sort(null);
-		    super.notifyDataSetChanged();
+			super.notifyDataSetChanged();
 		}
 
 		@Override
@@ -445,7 +439,7 @@ public class DownloadFragment extends Fragment implements RepoListener, ModuleLi
 			if (installed == null)
 				return INSTALL_STATUS_NOT_INSTALLED;
 
-			return installed.isUpdate(getLatestVersion()) ? INSTALL_STATUS_HAS_UPDATE : INSTALL_STATUS_INSTALLED; 
+			return installed.isUpdate(getLatestVersion()) ? INSTALL_STATUS_HAS_UPDATE : INSTALL_STATUS_INSTALLED;
 		}
 
 		public long getCreationDate() {

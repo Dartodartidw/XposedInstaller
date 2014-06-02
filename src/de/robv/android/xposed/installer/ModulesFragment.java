@@ -16,6 +16,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
@@ -35,7 +37,9 @@ import de.robv.android.xposed.installer.util.ModuleUtil;
 import de.robv.android.xposed.installer.util.ModuleUtil.InstalledModule;
 import de.robv.android.xposed.installer.util.ModuleUtil.ModuleListener;
 import de.robv.android.xposed.installer.util.NavUtil;
+import de.robv.android.xposed.installer.util.NotificationUtil;
 import de.robv.android.xposed.installer.util.RepoLoader;
+import de.robv.android.xposed.installer.util.ThemeUtil;
 
 public class ModulesFragment extends ListFragment implements ModuleListener {
 	public static final String SETTINGS_CATEGORY = "de.robv.android.xposed.category.MODULE_SETTINGS";
@@ -84,11 +88,22 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 		reloadModules.run();
 		setListAdapter(mAdapter);
 		setEmptyText(getActivity().getString(R.string.no_xposed_modules_found));
-		getListView().setFastScrollEnabled(true);
-		getListView().setDivider(getResources().getDrawable(R.color.list_divider));
-		getListView().setDividerHeight(1);
 		registerForContextMenu(getListView());
 		mModuleUtil.addListener(this);
+
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		int sixDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, metrics);
+		int eightDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, metrics);
+		getListView().setDivider(null);
+		getListView().setDividerHeight(sixDp);
+		getListView().setPadding(eightDp, eightDp, eightDp, eightDp);
+		getListView().setClipToPadding(false);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		NotificationUtil.cancelAll();
 	}
 
 	@Override
@@ -132,7 +147,7 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 
 		if (packageName.equals(NOT_ACTIVE_NOTE_TAG)) {
 			Intent intent = new Intent(getActivity(), XposedInstallerActivity.class);
-			intent.putExtra(XposedInstallerActivity.EXTRA_OPEN_TAB, XposedDropdownNavActivity.TAB_INSTALL);
+			intent.putExtra(XposedInstallerActivity.EXTRA_SECTION, XposedDropdownNavActivity.TAB_INSTALL);
 			startActivity(intent);
 			return;
 		}
@@ -162,10 +177,6 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 			menu.removeItem(R.id.menu_support);
 		} else if (NavUtil.parseURL(downloadModule.support) == null) {
 			menu.removeItem(R.id.menu_support);
-		}
-
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			menu.removeItem(R.id.menu_uninstall);
 		}
 
 		String installer = mPm.getInstallerPackageName(installedModule.packageName);
@@ -215,8 +226,13 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 				return true;
 
 			case R.id.menu_uninstall:
-				startActivity(new Intent(Intent.ACTION_UNINSTALL_PACKAGE,
-					Uri.fromParts("package", module.packageName, null)));
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					startActivity(new Intent(Intent.ACTION_UNINSTALL_PACKAGE,
+						Uri.fromParts("package", module.packageName, null)));
+				} else {
+					startActivity(new Intent(Intent.ACTION_DELETE,
+						Uri.fromParts("package", module.packageName, null)));
+				}
 				return true;
 		}
 
@@ -251,7 +267,7 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 
 	private class ModuleAdapter extends ArrayAdapter<InstalledModule> {
 		public ModuleAdapter(Context context) {
-			super(context, R.layout.list_item_module, R.id.text);
+			super(context, R.layout.list_item_module, R.id.title);
 		}
 
 		public void addAll(Collection<? extends InstalledModule> modules) {
@@ -280,6 +296,10 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 			}
 
 			InstalledModule item = getItem(position);
+
+			TextView version = (TextView) view.findViewById(R.id.version_name);
+			version.setText(item.versionName);
+
 			// Store the package name in some views' tag for later access
 			((CheckBox) view.findViewById(R.id.checkbox)).setTag(item.packageName);
 			view.setTag(item.packageName);
@@ -289,10 +309,10 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 			TextView descriptionText = (TextView) view.findViewById(R.id.description);
 			if (!item.getDescription().isEmpty()) {
 				descriptionText.setText(item.getDescription());
-				descriptionText.setTextColor(0xFF777777);
+				descriptionText.setTextColor(ThemeUtil.getThemeColor(getContext(), android.R.attr.textColorSecondary));
 			} else {
-				descriptionText.setText(getActivity().getString(R.string.module_empty_description));
-				descriptionText.setTextColor(0xFFCC7700);
+				descriptionText.setText(getString(R.string.module_empty_description));
+				descriptionText.setTextColor(getResources().getColor(R.color.warning));
 			}
 
 			CheckBox checkbox = (CheckBox) view.findViewById(R.id.checkbox);
@@ -305,12 +325,12 @@ public class ModulesFragment extends ListFragment implements ModuleListener {
 				warningText.setVisibility(View.VISIBLE);
 			} else if (installedXposedVersion != 0 && item.minVersion > installedXposedVersion) {
 				checkbox.setEnabled(false);
-				warningText.setText(String.format(getString(R.string.warning_xposed_min_version), 
+				warningText.setText(String.format(getString(R.string.warning_xposed_min_version),
 						item.minVersion));
 				warningText.setVisibility(View.VISIBLE);
 			} else if (item.minVersion < ModuleUtil.MIN_MODULE_VERSION) {
 				checkbox.setEnabled(false);
-				warningText.setText(String.format(getString(R.string.warning_min_version_too_low), 
+				warningText.setText(String.format(getString(R.string.warning_min_version_too_low),
 						item.minVersion, ModuleUtil.MIN_MODULE_VERSION));
 				warningText.setVisibility(View.VISIBLE);
 			} else {
