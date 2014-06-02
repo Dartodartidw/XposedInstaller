@@ -11,7 +11,7 @@ public final class ThemeUtil {
 	private ThemeUtil() {};
 
 	private static int[] THEMES = new int[] {
-//		R.style.Theme_Light,
+		R.style.Theme_Light,
 		R.style.Theme_Dark,
 		R.style.Theme_Dark_Black,
 	};

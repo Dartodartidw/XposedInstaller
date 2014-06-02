@@ -34,7 +34,6 @@ public abstract class XposedDropdownNavActivity extends XposedBaseActivity {
 
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-
 		final ActionBar bar = getSupportActionBar();
 		bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		bar.setDisplayShowTitleEnabled(false);

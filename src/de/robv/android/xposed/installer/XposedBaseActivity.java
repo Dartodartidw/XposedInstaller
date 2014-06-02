@@ -10,8 +10,8 @@ public abstract class XposedBaseActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceBundle) {
-		super.onCreate(savedInstanceBundle);
 		ThemeUtil.setTheme(this);
+		super.onCreate(savedInstanceBundle);
 	}
 
 	@Override
