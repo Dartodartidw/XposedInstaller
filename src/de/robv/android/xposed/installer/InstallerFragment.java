@@ -193,10 +193,6 @@ public class InstallerFragment extends Fragment {
 			}
 		});
 
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-			btnSoftReboot.setEnabled(false);
-		}
-
 		btnSoftReboot.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -895,7 +891,7 @@ public class InstallerFragment extends Fragment {
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
 			softReboot = "setprop ctl.restart surfaceflinger; setprop ctl.restart zygote";
 		} else {
-			softReboot = "stop; start";
+			softReboot = new File(new File(getActivity().getApplicationInfo().dataDir, "lib"), "librestart.so").getAbsolutePath();
 		}
 		if (mRootUtil.execute(softReboot, messages) != 0) {
 			messages.add("");
