@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="de.robv.android.xposed.installer"
-    android:versionCode="1000321"
-    android:versionName="2.6.1-gb" >
+    android:versionCode="1000322"
+    android:versionName="2.6.1-gb-p2" >
 
     <uses-sdk
         android:minSdkVersion="10"
