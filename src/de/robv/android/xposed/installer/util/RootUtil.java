@@ -114,7 +114,13 @@ public class RootUtil {
 	 */
 	public int executeWithBusybox(String command, List<String> output) {
 		AssetUtil.extractBusybox();
-		return execute(AssetUtil.BUSYBOX_FILE.getAbsolutePath() + " " + command, output);
+		if (execute(AssetUtil.BUSYBOX_FILE.getAbsolutePath() + " " + command, null) == 0) {
+			if (output != null) {
+				output.addAll(mLastOutput);
+			}
+			return 0;
+		}
+		return execute("busybox " + command, output);
 	}
 
 	@Override
