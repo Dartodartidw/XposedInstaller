@@ -416,7 +416,7 @@ public class InstallerFragment extends Fragment {
 		}
 
 		AlertDialog dialog = new AlertDialog.Builder(getActivity())
-		.setMessage(result)
+		.setMessage(result.replaceAll("\n\n+", "\n\n"))
 		.setPositiveButton(android.R.string.ok, null)
 		.create();
 		dialog.show();
@@ -450,7 +450,7 @@ public class InstallerFragment extends Fragment {
 		}
 
 		AlertDialog dialog = new AlertDialog.Builder(getActivity())
-		.setMessage(message)
+		.setMessage(message.replaceAll("\n\n+", "\n\n"))
 		.setPositiveButton(android.R.string.yes, yesHandler)
 		.setNegativeButton(android.R.string.no, noHandler)
 		.create();
