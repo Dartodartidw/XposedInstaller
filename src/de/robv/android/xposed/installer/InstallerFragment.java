@@ -18,12 +18,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,7 +208,13 @@ public class InstallerFragment extends Fragment {
 		});
 
 		if (!XposedApp.getPreferences().getBoolean("hide_install_warning", false)) {
-			final View dontShowAgainView = inflater.inflate(R.layout.dialog_install_warning, null);
+			Context context;
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+				context = new ContextThemeWrapper(getActivity(), R.style.Theme_Dark);
+			} else {
+				context = getActivity();
+			}
+			final View dontShowAgainView = LayoutInflater.from(context).inflate(R.layout.dialog_install_warning, null);
 			new AlertDialog.Builder(getActivity())
 			.setTitle(R.string.install_warning_title)
 			.setView(dontShowAgainView)
