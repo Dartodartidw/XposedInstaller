@@ -28,3 +28,6 @@
 # These are ok as well
 -dontwarn android.os.FileUtils
 -dontwarn com.emilsjolander.components.stickylistheaders.**
+
+-dontwarn android.annotation.**
+-keep class android.support.v7.widget.SearchView { <init>(...); }

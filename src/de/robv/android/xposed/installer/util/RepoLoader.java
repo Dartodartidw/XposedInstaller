@@ -227,13 +227,7 @@ public class RepoLoader {
 	}
 
 	public String[] getRepositories() {
-		String repository;
-		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
-			repository = "http://piebridge.me/repo.xml.gz";
-		} else {
-			repository = "http://piebridge.me/repo.gb.xml.gz";
-		}
-		return mPref.getString("repositories", repository).split("\\|");
+		return mPref.getString("repositories", "http://piebridge.me/repo." + Build.VERSION.SDK_INT + ".xml.gz").split("\\|");
 	}
 
 	public void setRepositories(String... repos) {

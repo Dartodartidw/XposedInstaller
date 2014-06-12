@@ -11,7 +11,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.IBinder;
 
-public class GingerBreadUtil {
+public class RecreateUtil {
 
 	private static Field scanField(Class<?> clazz, String... names) {
 		for (String name : names) {

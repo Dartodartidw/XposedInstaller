@@ -14,6 +14,7 @@ import java.util.jar.JarInputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.piebridge.util.Unix;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
@@ -398,7 +399,7 @@ public class InstallerFragment extends Fragment {
 			txtInstallError.setTextColor(ThemeUtil.getThemeColor(getActivity(), android.R.attr.textColorTertiary));
 		} else {
 			txtKnownIssue.setVisibility(View.GONE);
-			btnInstall.setTextColor(ThemeUtil.getThemeColor(getActivity(), android.R.attr.textColorPrimary));
+			btnInstall.setTextColor(btnUninstall.getTextColors());
 			txtInstallError.setTextColor(getResources().getColor(R.color.warning));
 		}
 	}
@@ -857,7 +858,7 @@ public class InstallerFragment extends Fragment {
 			new AsyncDialogClickListener(getString(R.string.reboot)) {
 				@Override
 				protected void onAsyncClick(DialogInterface dialog, int which) {
-					reboot(null);
+					softReboot();
 				}
 			}, null);
 	}
@@ -899,7 +900,7 @@ public class InstallerFragment extends Fragment {
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
 			softReboot = "setprop ctl.restart surfaceflinger; setprop ctl.restart zygote";
 		} else {
-			softReboot = new File(new File(getActivity().getApplicationInfo().dataDir, "lib"), "librestart.so").getAbsolutePath();
+			softReboot = "/system/bin/kill -15 -" + Unix.getppid();
 		}
 		if (mRootUtil.execute(softReboot, messages) != 0) {
 			messages.add("");

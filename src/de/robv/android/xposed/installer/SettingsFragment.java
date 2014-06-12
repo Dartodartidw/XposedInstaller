@@ -9,7 +9,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import me.piebridge.android.preference.PreferenceFragment;
-import me.piebridge.util.GingerBreadUtil;
+import me.piebridge.util.RecreateUtil;
 import android.widget.Toast;
 import de.robv.android.xposed.installer.util.RepoLoader;
 
@@ -75,7 +75,7 @@ public class SettingsFragment extends PreferenceFragment {
 		prefTheme.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				GingerBreadUtil.recreate(getActivity());
+				RecreateUtil.recreate(getActivity());
 				return true;
 			}
 		});
